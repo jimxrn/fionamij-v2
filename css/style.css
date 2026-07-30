@@ -8,6 +8,10 @@
 
 }
 
+/*==========================================
+LAYOUT
+==========================================*/
+
 body{
 
     background:var(--bg);
@@ -26,10 +30,14 @@ body{
 
 }
 
+/*==========================================
+TYPOGRAPHY
+==========================================*/
+
 h1{
 
     font-family:'Cormorant Garamond',serif;
-    font-size:64px;
+    font-size:clamp(3rem, 8vw, 4rem);
     font-weight:600;
     letter-spacing:2px;
     text-align:center;
@@ -47,6 +55,10 @@ h1{
     text-transform:lowercase;
 
 }
+
+/*==========================================
+ HERO
+==========================================*/
 
 .hero{
     min-height:100vh;
@@ -70,13 +82,6 @@ h1{
     border:1px solid rgba(0,0,0,.04);
 }
 
-.hero-text{
-    max-width:320px;
-    font-size:1rem;
-    line-height:1.8;
-    color:var(--text-light);
-}
-
 .hero-title{
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2rem, 6vw, 3.2rem);
@@ -89,8 +94,6 @@ h1{
 }
 
 .primary-btn{
-
-
      background:var(--primary);
      color:var(--text);
      border:none;
@@ -99,7 +102,6 @@ h1{
      font-size:.95rem;
      font-weight:600;
      cursor:pointer;
-     transition:var(--transition);
      min-width:220px;
      letter-spacing:.4px;
      box-shadow:var(--shadow-sm);
@@ -107,110 +109,7 @@ h1{
 }
 
 .primary-btn:hover{
-
     transform:translateY(-4px);
-    box-shadow:var(--shadow-lg);
-
-}
-
-/*==========================================
- HERO
-==========================================*/
-
-.hero{
-
-    min-height:100vh;
-
-    display:flex;
-    flex-direction:column;
-
-    justify-content:center;
-    align-items:center;
-
-    text-align:center;
-
-    gap:1.75rem;
-
-    padding:2rem;
-
-}
-
-.hero-title{
-
-    font-family:'Cormorant Garamond', serif;
-
-    font-size:clamp(2.6rem,7vw,4rem);
-
-    line-height:1.05;
-
-    font-weight:500;
-
-    max-width:12ch;
-
-}
-
-.hero-image{
-
-    width:min(90vw,360px);
-
-    aspect-ratio:3/4;
-
-    background:var(--color-sand);
-
-    border-radius:var(--radius-lg);
-
-    box-shadow:var(--shadow-md);
-
-    border:1px solid rgba(0,0,0,.05);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-}
-
-.hero-image span{
-
-    color:rgba(43,43,43,.35);
-
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-    font-size:.8rem;
-
-}
-
-.primary-btn{
-
-    background:var(--primary);
-
-    color:var(--text);
-
-    border:none;
-
-    border-radius:999px;
-
-    padding:18px 42px;
-
-    min-width:260px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.35s;
-
-    box-shadow:var(--shadow-sm);
-
-}
-
-.primary-btn:hover{
-
-    transform:translateY(-3px);
-
     box-shadow:var(--shadow-lg);
 
 }
@@ -220,62 +119,200 @@ h1{
 ==========================================*/
 
 .collection-story{
-
-    padding:7rem 2rem;
-
+    padding-block:7rem;
+    padding-inline:2rem;
     max-width:640px;
-
     margin:auto;
-
     text-align:center;
 
 }
 
 .eyebrow{
-
     letter-spacing:.25em;
-
     font-size:.75rem;
-
     color:var(--text-light);
-
     margin-bottom:1rem;
 
 }
 
 .collection-story h2{
-
     font-family:'Cormorant Garamond',serif;
-
     font-size:clamp(2.2rem,6vw,3.5rem);
-
     margin-bottom:.5rem;
 
 }
 
 .collection-story h3{
-
     font-size:1rem;
-
     font-weight:500;
-
     color:var(--primary);
-
     margin-bottom:2rem;
 
 }
 
 .story{
-
     line-height:2;
-
     color:var(--text-light);
-
     max-width:520px;
-
     margin:auto;
 
 }
 
+/*==========================================
+PIECES
+==========================================*/
 
+.pieces{
+
+    padding-block:7rem ;
+    padding-inline:2rem;
+    text-align:center;
+
+}
+
+.pieces h2{
+
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(2rem,6vw,3rem);
+    margin-top:.5rem;
+    margin-bottom:1rem;
+
+}
+
+.pieces-intro{
+
+    max-width:34rem;
+    margin:0 auto 3rem;
+    line-height:1.8;
+    color:var(--text-light);
+
+}
+.pieces-grid{
+
+    display:grid;
+    grid-template-columns:1fr;
+    gap:2.5rem;
+    margin-top:3rem;
+
+}
+
+.piece-card{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1rem;
+
+}
+
+.piece-image{
+
+    width:100%;
+    max-width:320px;
+    aspect-ratio:3/4;
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:var(--text-light);
+    box-shadow:var(--shadow-md);
+
+}
+
+.piece-name{
+
+    font-family:'Cormorant Garamond',serif;
+    font-size:2rem;
+    font-weight:500;
+
+}
+
+.piece-color{
+
+    color:var(--text-light);
+
+}
+
+.piece-price{
+
+    font-weight:600;
+    font-size:1.2rem;
+    letter-spacing:.03em;
+
+}
+
+.piece-options{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.75rem;
+
+}
+
+.option-label{
+
+    font-size:.8rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--text-light);
+
+}
+
+.piece-colors{
+
+    display:flex;
+    gap:1rem;
+
+}
+
+.color-swatch{
+
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:var(--transition);
+
+}
+
+.black{
+
+    background:#1F1F1F;
+
+}
+
+.sage{
+
+    background:#B8C5B1;
+
+}
+
+.ivory{
+
+    background:#F7F3EC;
+    border:1px solid rgba(0,0,0,.08);
+
+}
+
+.blush{
+
+    background:#EBCFCB;
+
+}
+
+.color-swatch.active{
+
+    outline:2px solid var(--text);
+    outline-offset:4px;
+
+}
+.selected-color{
+
+    font-weight:500;
+    color:var(--text);
+
+}
 
