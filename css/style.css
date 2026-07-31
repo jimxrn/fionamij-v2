@@ -334,6 +334,8 @@ PIECES
         transform .6s ease,
         opacity .25s ease;
 
+}        
+
 .piece-card:hover .piece-image img{
 
     transform:scale(1.03);
@@ -345,4 +347,5 @@ PIECES
     margin-bottom:1.75rem;
 
 }
+
 
