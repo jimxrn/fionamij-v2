@@ -6,10 +6,22 @@
 
     <title>FIONAMIJ</title>
 
-    <link rel="stylesheet" href="css/tokens.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Project Styles -->
+
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -100,12 +112,14 @@
             <article class="piece-card">
 
                 <div class="piece-image">
-                     <img
+                      <img
                         id="product-image"
+                        class="product-image"
                         src="assets/images/cinta-black.jpg"
-                        alt="The Cinta in Black">
-                
-                
+                        alt="The Cinta in Black"
+                        loading="lazy"
+                        decoding="async">
+
                 </div>
 
                 <h3 class="piece-name">
@@ -120,21 +134,25 @@
 
                         <div class="piece-colors">
                             <button
+                                type="button"
                                 class="color-swatch black active"
                                 aria-label="Black">
                             </button>
 
                             <button
+                                type="button"
                                 class="color-swatch sage"
                                 aria-label="Sage">
                             </button>
 
                             <button
+                                type="button"
                                 class="color-swatch ivory"
                                 aria-label="Ivory">
                             </button>
 
                             <button
+                                type="button"
                                 class="color-swatch blush"
                                 aria-label="Blush">
                             </button>
@@ -153,9 +171,19 @@
                     ₱1,290
                 </p>
 
-                <button class="primary-btn">
+                <button 
+                    type="button"
+                    class="primary-btn">
                     Select Piece
                 </button>
+
+                <button
+                    type="button"
+                    class="primary-btn">
+                    Explore the Cinta Collection
+                </button>
+
+
 
             </article>
 
@@ -165,11 +193,11 @@
 
 </main>
 
-<script src="js/utils.js"></script>
-<script src="js/api.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/checkout.js"></script>
-<script src="js/app.js"></script>
+<script src="assets/js/utils.js" defer></script>
+<script src="assets/js/api.js" defer></script>
+<script src="assets/js/ui.js" defer></script>
+<script src="assets/js/checkout.js" defer></script>
+<script src="assets/js/app.js" defer></script>
 
 </body>
 

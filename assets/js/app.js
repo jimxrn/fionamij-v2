@@ -18,6 +18,15 @@ swatches.forEach((swatch) => {
             .getAttribute("aria-label")
             .toLowerCase();
 
-        productImage.src = `assets/images/cinta-${color}.jpg`;
+        productImage.style.opacity = "0";
+        setTimeout(() => {
+
+            productImage.src =
+                `assets/images/cinta-${color}.jpg`;
+
+            productImage.style.opacity = "1";
+
+        }, 250);
+
     });
 });

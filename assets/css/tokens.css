@@ -24,7 +24,7 @@
     --secondary: var(--color-sage);
     --accent: var(--color-sand);
 
-    --text: #2B2B2B;
+    --text: #3A3632;
     --text-light: #6B6B6B;
 
     --border: #ECECEC;
@@ -47,15 +47,15 @@
 
     --radius-sm: 12px;
     --radius-md: 18px;
-    --radius-lg: 28px;
+    --radius-lg: 24px;
 
     /* ==========================
        SHADOWS
     ========================== */
 
-    --shadow-sm: 0 4px 12px rgba(0,0,0,.05);
-    --shadow-md: 0 12px 35px rgba(0,0,0,.08);
-    --shadow-lg: 0 20px 50px rgba(0,0,0,.12);
+    --shadow-sm: 0 6px 16px rgba(43,43,43,.04);
+    --shadow-md: 0 12px 28px rgba(43,43,43,.06);
+    --shadow-lg: 0 18px 40px rgba(43,43,43,.08);
 
     /* ==========================
        ANIMATION
