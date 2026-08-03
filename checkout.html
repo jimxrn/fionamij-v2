@@ -471,23 +471,37 @@
 
                             </div>
 
-                            <h3>
+                            <img
+                                id="receipt-preview"
+                                class="receipt-preview"
+                                alt="Receipt Preview">
+                                
+
+                            <h3 id="upload-title">
 
                                 Upload Receipt
 
                             </h3>
 
-                            <p>
+                            <p id="upload-description">
 
                                 Click to choose an image
 
                             </p>
 
-                            <small>
+                            <small id="upload-formats">
 
                                 JPG • JPEG • PNG
 
                             </small>
+
+                            <p
+                                id="upload-status"
+                                class="upload-status">
+
+                                ✓ Receipt uploaded
+
+                            </p>
 
                             <input
                                 type="file"
@@ -507,7 +521,7 @@
                 SIDEBAR
                 ======================================-->
 
-                <aside class="checkout-sidebar">
+            <aside class="checkout-sidebar">
 
                 <!--==================================
                 ORDER SUMMARY
@@ -518,7 +532,7 @@
 
                         <h2 class="section-title">
 
-                        Order Summary
+                            Order Summary
 
                         </h2>
 
@@ -526,6 +540,7 @@
                         <div class="summary-product">
 
                             <img
+                            id="summary-product-image"
                             src="assets/images/cinta-black.jpg"
                             alt="The Cinta"
                             class="summary-image">
@@ -534,19 +549,19 @@
 
                                 <p class="product-collection">
 
-                                        Cinta Collection
+                                    Cinta Collection
 
                                 </p>
 
                                 <h3 class="product-name">
 
-                                        The Cinta
+                                    The Cinta
 
                                 </h3>
 
                                 <p>
 
-                                        Color:
+                                    Color:
                                     <span id="summary-color">
 
                                         Black
@@ -557,7 +572,7 @@
 
                                 <p>
 
-                                        Size:
+                                    Size:
                                     <span id="summary-size">
 
                                         Small
@@ -568,7 +583,7 @@
 
                                 <p>
 
-                                         Quantity:
+                                    Quantity:
                                     <span id="summary-quantity">
 
                                         1
@@ -591,11 +606,11 @@
 
                             </span>
 
-                            <strong>
+                            <strong id="summary-subtotal">
 
                                 ₱1,290
 
-                            </strong>
+                            </strong>   
 
                         </div>
 
@@ -641,9 +656,9 @@
 
                             </span>
 
-                            <strong>
+                            <strong id="summary-total">
 
-                            ₱1,290
+                                ₱1,290
 
                             </strong>
 
@@ -653,7 +668,7 @@
 
                 </section>
 
-                </aside>
+            </aside>
 
         </div>
 

@@ -292,3 +292,53 @@ PROOF OF PAYMENT
     letter-spacing:.05em;
 
 }
+/*==========================================
+RECEIPT PREVIEW
+==========================================*/
+.receipt-preview{
+
+    display:none;
+
+   max-width:75%;
+
+    max-height:240px;
+
+    object-fit:contain;
+
+    border-radius:16px;
+
+    margin-bottom:1rem;
+
+    transition:.35s ease;
+
+}
+/*==========================================
+UPLOAD STATUS
+==========================================*/
+
+.upload-status{
+
+    display:none;
+
+    margin-top:1rem;
+
+    font-size:.95rem;
+
+    font-weight:600;
+
+    color:#6F8A6B;
+
+}
+#upload-title{
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+#upload-title:hover{
+
+    opacity:.7;
+
+}

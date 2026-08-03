@@ -753,6 +753,7 @@ CHECKOUT RESPONSIVE LAYOUT
     .checkout-layout{
 
         grid-template-columns:2fr 1fr;
+
         align-items:start;
 
     }
@@ -760,7 +761,10 @@ CHECKOUT RESPONSIVE LAYOUT
     .checkout-sidebar{
 
         position:sticky;
+
         top:2rem;
+
+        align-self:start;
 
     }
 

@@ -26,39 +26,40 @@
 
 <body>
 
-<main>
+    <main>
 
-    <!-- =========================
-         HERO
-         ========================== -->
+        <!-- =========================
+            HERO
+        ========================== -->
 
         <section class="hero">
 
             <h1>FIONAMIJ</h1>
+
             <p class="tagline">
-            timeless. feminine. YOU ♡
-        </p>
+                timeless. feminine. YOU ♡
+            </p>
 
-        <h2 class="hero-title">
-            Designed for<br>
-            every version<br>
-            of you
-        </h2>
+            <h2 class="hero-title">
+                Designed for<br>
+                every version<br>
+                of you
+            </h2>
 
-        <div class="hero-image">
+            <div class="hero-image">
 
-            <!-- Place holder until we add campaign image -->
-            <div class="hero-image-placeholder"></div>
-            <!-- Future Image-->
-            <!-- <img src="images/campaign-image.jpg" alt="Campaign Image"> -->
-        </div>
+                <!-- Place holder until we add campaign image -->
+                <div class="hero-image-placeholder"></div>
+                <!-- Future Image-->
+                <!-- <img src="images/campaign-image.jpg" alt="Campaign Image"> -->
+            </div>
 
 
-        <button class="primary-btn">
-            Explore the Cinta Collection
-        </button>
+            <button class="primary-btn">
+                Explore the Cinta Collection
+            </button>
 
-    </section>
+        </section>
 
     <!-- =========================
          CINTA
@@ -66,138 +67,206 @@
 
         <section class="collection-story">
 
-        <p class="eyebrow">
-            CHAPTER I
-        </p>
+            <p class="eyebrow">
+                CHAPTER I
+            </p>
 
-        <h2>
-            the Cinta Collection
-        </h2>
+            <h2>
+                the Cinta Collection
+            </h2>
 
-        <h3>
-            Tied with love.
-        </h3>
+            <h3>
+                Tied with love.
+            </h3>
 
-        <p class="story">
+            <p class="story">
 
-            Every wrap begins with a ribbon.
+                Every wrap begins with a ribbon.
 
-            A gentle tie that transforms one piece into many possibilities.
+                A gentle tie that transforms one piece into many possibilities.
 
-            Created to move with you, adapt with you, and become part of your story.
+                Created to move with you, adapt with you, and become part of your story.
 
-        </p>
+            </p>
 
         </section>
 
+        
         <section class="pieces">
 
-        <p class="eyebrow">
-        THE PIECES
-        </p>
+            <p class="eyebrow">
+                THE PIECES
+            </p>
 
-        <h2>
-        Made to be tied your way.
-        </h2>
+            <h2>
+                Made to be tied your way.
+            </h2>
 
-        <p class="pieces-intro">
-        Every piece begins with the same ribbon,
-        but every woman wears it differently.
-        </p>
+            <p class="pieces-intro">
+                Every piece begins with the same ribbon,
+                but every woman wears it differently.
+            </p>
 
         
 
-        <div class="pieces-grid">
+            <div class="pieces-grid">
 
-            <article class="piece-card">
+                <!--==========================================
+                PRODUCT CARD
+                ==========================================-->
 
-                <div class="piece-image">
-                      <img
-                        id="product-image"
-                        class="product-image"
-                        src="assets/images/cinta-black.jpg"
-                        alt="The Cinta in Black"
-                        loading="lazy"
-                        decoding="async">
+                <article class="piece-card">
+                
+                    <div class="piece-image">
 
-                </div>
+                        <img
+                            id="product-image"
+                            class="product-image"
+                            src="assets/images/cinta-black.jpg"
+                            alt="The Cinta in Black"
+                            loading="lazy"
+                            decoding="async">
 
-                <h3 class="piece-name">
-                    The Cinta
-                </h3>
+                    </div>
 
-               <div class="piece-options">
+                    <h3 class="piece-name">
 
-                     <p class="option-label">
-                        Available Colors
-                     </p>
+                        The Cinta
+
+                    </h3>
+
+                    <div class="piece-options">
+
+                        <!--==========================================
+                        COLOR SELECTOR
+                        ==========================================-->
+
+                            <p class="option-label">
+
+                                Available Colors
+
+                            </p>
 
                         <div class="piece-colors">
+
                             <button
                                 type="button"
                                 class="color-swatch black active"
-                                aria-label="Black">
+                                aria-label="Black"
+                                data-color="Black">
                             </button>
 
                             <button
                                 type="button"
                                 class="color-swatch sage"
-                                aria-label="Sage">
+                                aria-label="Sage"
+                                data-color="Sage">
                             </button>
 
                             <button
                                 type="button"
                                 class="color-swatch ivory"
-                                aria-label="Ivory">
+                                aria-label="Ivory"
+                                data-color="Ivory">
                             </button>
 
                             <button
                                 type="button"
                                 class="color-swatch blush"
-                                aria-label="Blush">
+                                aria-label="Blush"
+                                data-color="Blush">
                             </button>
-                        
+
                         </div>
 
-                    <p class="selected-color">
+                        <p class="selected-color">
 
                             Black
 
-                    </p>
+                        </p>
+
+                    
+                        <!--==========================================
+                        SIZE SELECTOR
+                            ==========================================-->
+
+                        <div class="piece-sizes">
+
+                            <p class="option-label">
+
+                                Available Sizes
+
+                            </p>
+
+                            <div class="size-options">
+
+                                <button
+                                    type="button"
+                                    class="size-btn active"
+                                    data-size="Small">
+
+                                    Small
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="size-btn"
+                                    data-size="Medium">
+
+                                    Medium
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="size-btn"
+                                    data-size="Large">
+
+                                    Large
+
+                                </button>
+
+                            </div>
+
+                            <p class="selected-size">
+
+                                 Small
+
+                            </p>
+
+                        </div>
+
+                        <p class="piece-price">
+
+                            ₱1,290
+
+                        </p>
+
+                        <button
+                            id="select-piece-btn"
+                            type="button"
+                            class="primary-btn">
+
+                            Select Piece
+
+                        </button>
+
+                    </div>    
+
+                </article>
 
             </div>
 
-                <p class="piece-price">
-                    ₱1,290
-                </p>
-
-                <button 
-                    type="button"
-                    class="primary-btn">
-                    Select Piece
-                </button>
-
-                <button
-                    type="button"
-                    class="primary-btn">
-                    Explore the Cinta Collection
-                </button>
-
-
-
-            </article>
-
-        </div>
-
         </section>
 
-</main>
+    </main>
 
-<script src="assets/js/utils.js" defer></script>
-<script src="assets/js/api.js" defer></script>
-<script src="assets/js/ui.js" defer></script>
-<script src="assets/js/checkout.js" defer></script>
-<script src="assets/js/app.js" defer></script>
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/api.js" defer></script>
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/checkout.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
 
 </body>
 
