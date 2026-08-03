@@ -1,8 +1,13 @@
 
+
 *{
 
+
+
     margin:0;
+
     padding:0;
+
     box-sizing:border-box;
 
 }
@@ -11,12 +16,18 @@
 LAYOUT
 ==========================================*/
 
+
+
 body{
 
     background:var(--bg);
+
     color:var(--text);
+
     font-family:'Inter',sans-serif;
+
     transition:var(--transition);
+
     min-height:100vh;
 
 }
@@ -24,388 +35,759 @@ body{
 .container{
 
     width:min(1200px, 92%);
+
     margin-inline:auto;
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
 
 }
-img{
-    display:block;
-    max-width:100%;
-    height:auto;
-}
+
+
 
 /*==========================================
 TYPOGRAPHY
 ==========================================*/
 
+
+
 h1{
 
     font-family:'Cormorant Garamond',serif;
-    font-size:clamp(2.5rem, 5vw, 4rem);
-    font-weight:600;
-    letter-spacing:2px;
-    text-align:center;
 
+    font-size:clamp(2.5rem, 5vw, 4rem);
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    text-align:center;
 }
 
 .tagline{
 
     text-align:center;
+
     margin-top:12px;
+
     margin-bottom:20px;
+
     color:var(--text-light);
+
     font-size:14px;
+
     letter-spacing:1.6px;
+
     text-transform:lowercase;
 
-}
 
+
+}
 /*==========================================
  HERO
 ==========================================*/
-
 .hero{
+
     min-height:100vh;
+
     display:flex;
+
     flex-direction:column;
+
     justify-content:center;
+
     align-items:center;
+
     text-align:center;
+
     gap:1.75rem;
+
     padding:2rem;
+
 }
 
 .hero-image{
+
     width:min(88vw, 360px);
+
     max-width:320px;
+
     aspect-ratio:3 / 4;
 
     background:var(--color-sand);
+
     border-radius:var(--radius-lg);
+
     box-shadow:var(--shadow-md);
 
     overflow:hidden;
-    
+
     border:1px solid rgba(0,0,0,.04);
+
 }
 
 .hero-title{
+
     font-family: 'Cormorant Garamond', serif;
+
     font-size: clamp(2rem, 6vw, 3.2rem);
+
     font-weight: 500;
+
     line-height: 1.15;
+
     letter-spacing: -0.02em;
+
     max-width: 12ch;
+
     text-align: center;
+
     margin: 0 auto;
+
 }
 
 .primary-btn{
+
      background:var(--primary);
+
      color:var(--text);
+
      border:none;
+
      padding:18px 38px;
+
      border-radius:999px;
+
      font-size:.95rem;
+
      font-weight:600;
+
      cursor:pointer;
+
      min-width:220px;
+
      letter-spacing:.4px;
+
      box-shadow:var(--shadow-sm);
+
      transition:
+
         transform .35s ease,
+
         box-shadow .35s ease,
+
         background .35s ease;
+
 }
 
 .primary-btn:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow-lg);
 
+    transform:translateY(-4px);
+
+    box-shadow:var(--shadow-lg);
 }
 
 /*==========================================
+
  COLLECTION STORY
+
 ==========================================*/
 
+
+
 .collection-story{
+
     padding-block:7rem;
+
     padding-inline:2rem;
+
     max-width:640px;
+
     margin:auto;
+
     text-align:center;
 
 }
 
 .eyebrow{
-    letter-spacing:.25em;
-    font-size:.75rem;
-    color:var(--text-light);
-    margin-bottom:1rem;
 
+    letter-spacing:.25em;
+
+    font-size:.75rem;
+
+    color:var(--text-light);
+
+    margin-bottom:1rem;
 }
 
 .collection-story h2{
-    font-family:'Cormorant Garamond',serif;
-    font-size:clamp(2.2rem,6vw,3.5rem);
-    margin-bottom:.5rem;
 
+    font-family:'Cormorant Garamond',serif;
+
+    font-size:clamp(2.2rem,6vw,3.5rem);
+
+    margin-bottom:.5rem;
 }
 
 .collection-story h3{
+
     font-size:1rem;
+
     font-weight:500;
+
     color:var(--primary);
+
     margin-bottom:2rem;
+
+
 
 }
 
 .story{
+
     line-height:2;
+
     color:var(--text-light);
+
     max-width:520px;
+
     margin:auto;
-
 }
-
 /*==========================================
 PIECES
 ==========================================*/
-
 .pieces{
-
     padding-block:7rem ;
+
     padding-inline:2rem;
+
     text-align:center;
-
 }
-
 .pieces h2{
-
     font-family:'Cormorant Garamond', serif;
+
     font-size:clamp(2rem,6vw,3rem);
+
     margin-top:.5rem;
+
     margin-bottom:1rem;
 
+
+
 }
-
 .pieces-intro{
-
     max-width:34rem;
+
     margin:0 auto 3rem;
+
     line-height:1.8;
+
     color:var(--text-light);
 
-}
-.pieces-grid{
 
+
+}
+
+.pieces-grid{
     display:grid;
+
     grid-template-columns:
+
         repeat(auto-fit, minmax(300px, 1fr));
+
     gap:2.5rem;
 
-}
 
+
+}
 .piece-card{
-
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     gap:1rem;
+
     transition:
+
         transform .35s ease,
+
         box-shadow .35s ease;
-
 }
-
 .piece-image{
-
     width:100%;
-    max-width:360px;
-    aspect-ratio:3/4;
-    background:var(--surface);
-    border-radius:var(--radius-lg);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:var(--text-light);
-    box-shadow:var(--shadow-sm);
-    overflow: hidden;
-    transition:
-        box-shadow .35s ease,
-        transform .35s ease;
 
+    max-width:360px;
+
+    aspect-ratio:3/4;
+
+    background:var(--surface);
+
+    border-radius:var(--radius-lg);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:var(--text-light);
+
+    box-shadow:var(--shadow-sm);
+
+    overflow: hidden;
+
+    transition:
+
+        box-shadow .35s ease,
+
+        transform .35s ease;
 }
+
+
 
 .piece-name{
-
     font-family:'Cormorant Garamond',serif;
+
     font-size:2rem;
+
     font-weight:500;
+
     line-height:1.1;
+
     letter-spacing:-.02em;
-
 }
-
 .piece-color{
-
     color:var(--text-light);
 
+
+
 }
 
+
+
 .piece-price{
-
     font-weight:600;
-    font-size:1.2rem;
-    letter-spacing:.03em;
 
+    font-size:1.2rem;
+
+    letter-spacing:.03em;
 }
 
 .piece-options{
-
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     gap:.75rem;
-
 }
-
 .option-label{
-
     font-size:.8rem;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--text-light);
 
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+    color:var(--text-light);
 }
+
+
 
 .piece-colors{
-
     display:flex;
+
     gap:1rem;
 
-}
 
+
+}
 .color-swatch{
-
     width:24px;
+
     height:24px;
+
     border-radius:50%;
+
     border:2px solid transparent;
+
     cursor:pointer;
+
     transition: 
+
         transform .25s ease,
+
         box-shadow .25s ease,
+
         outline-offset .25s ease;
+
 }
-
 .black{
-
     background:#1F1F1F;
 
+
+
 }
+
+
 
 .sage{
-
     background:#B8C5B1;
 
+
+
 }
+
+
 
 .ivory{
-
     background:#F7F3EC;
+
     border:1px solid rgba(0,0,0,.08);
 
+
+
 }
+
+
 
 .blush{
-
     background:#EBCFCB;
-
 }
+
+
 
 .color-swatch.active{
-
     outline:1.5px solid rgba(58,54,50,.35);
+
     outline-offset:4px;
+
     transform:scale(1.05);
-
 }
+
 .selected-color{
-
     font-weight:500;
-    color:var(--text);
-    margin-top:.5rem;
-    
 
+    color:var(--text);
+
+    margin-top:.5rem;
 }
+
+
 
 .piece-image img{
     width:100%;
+
     height:100%;
+
     object-fit:cover;
+
     display:block;
+
     opacity:1;
+
     transition:
+
         transform .6s ease,
+
         opacity .25s ease;
+
 }        
-
 .section-title{
-
     margin-bottom:1.75rem;
 
+
+
 }
+
+
 
 /*==========================================
 HOVER EFFECTS
 ==========================================*/
-
 .piece-card:hover{
-    transform:translateY(-4px);
+     transform:translateY(-4px);
+
+
 
 }
+
+
 
 .piece-card:hover .piece-image{
     box-shadow:var(--shadow-md);
 
-}
 
+
+}
 .piece-card:hover .piece-image img{
     transform:scale(1.03);
 
-}
 
+}
 .color-swatch:hover{
     transform:scale(1.08);
 
+
+
 }
+
+
 
 /*==========================================
 ACCESSIBILITY
 ==========================================*/
-
 :focus-visible{
-
     outline:2px solid var(--primary);
+
     outline-offset:4px;
+
     border-radius:6px;
+
+
 
 }
 
-
-
-
-
-
 @media (prefers-reduced-motion: reduce){
 
+
+
     *,
+
     *::before,
+
     *::after{
 
+
+
         animation:none !important;
+
         transition:none !important;
+
         scroll-behavior:auto !important;
+
+
+
+    }
+
+
+
+}
+
+/*==========================================
+CHECKOUT PAGE
+==========================================*/
+.checkout-page{
+
+    min-height:100vh;
+
+    background:var(--bg);
+
+    padding-block:3rem 5rem;
+
+
+}
+.checkout-page .container{
+
+    width:min(1200px,92%);
+
+    margin-inline:auto;
+
+}
+.checkout-header{
+
+    text-align:center;
+
+    margin-bottom:3rem;
+
+}
+.back-link{
+
+    display:inline-block;
+
+    margin-bottom:2rem;
+
+    color:var(--text-light);
+
+    text-decoration:none;
+
+    font-size:.95rem;
+
+    transition:var(--transition);
+
+}
+.back-link:hover{
+
+    color:var(--text);
+
+}
+.checkout-section{
+
+    margin-bottom:3rem;
+
+}
+/*==========================================
+PRODUCT SUMMARY
+==========================================*/
+
+.product-summary-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2rem;
+
+    background:var(--surface);
+
+    padding:1.5rem;
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.product-summary-image{
+
+    overflow:hidden;
+
+    border-radius:var(--radius-md);
+
+}
+
+.product-summary-image img{
+
+    width:100%;
+
+    height:280px;
+
+    display:block;
+
+    object-fit:cover;
+
+    object-position:center center;
+
+}
+
+.product-summary-details{
+
+    text-align:center;
+
+}
+
+.product-collection{
+
+    color:var(--text-light);
+
+    letter-spacing:.08em;
+
+    font-size:.8rem;
+
+    text-transform:uppercase;
+
+}
+
+.product-name{
+
+    font-family:'Cormorant Garamond',serif;
+
+    font-size:2rem;
+
+    margin:.5rem 0;
+
+}
+
+.product-price{
+
+    margin-top:1rem;
+
+    font-weight:600;
+
+    font-size:1.2rem;
+
+}
+
+/*==========================================
+CHECKOUT RESPONSIVE LAYOUT
+==========================================*/
+
+.checkout-layout{
+
+    display:grid;
+
+    gap:2rem;
+
+
+}
+.checkout-main{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2rem;
+
+
+}
+.checkout-sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2rem;
+
+
+}
+@media (min-width:992px){
+
+    .checkout-layout{
+
+        grid-template-columns:2fr 1fr;
+        align-items:start;
+
+    }
+
+    .checkout-sidebar{
+
+        position:sticky;
+        top:2rem;
+
+    }
+
+}
+
+/*==========================================
+RESPONSIVE FORM GRID
+==========================================*/
+
+.address-grid{
+
+    display:grid;
+    gap:1.5rem;
+
+}
+
+@media (min-width:768px){
+
+    .address-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .form-group.full-width{
+
+        grid-column:1 / -1;
 
     }
 
