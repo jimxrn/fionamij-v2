@@ -1,9 +1,7 @@
 /*==========================================
 CONFIG
 ==========================================*/
-
-const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
-
+const API_URL = "https://script.google.com/macros/s/AKfycbzJm4X3iiUV4A1suUPvE_WMSQH34lgHT7PFksZbToMebkC29V4di-7bv1Y_0eWqL-33/exec";
 
 /*==========================================
 LOAD SELECTED PRODUCT
@@ -306,6 +304,95 @@ function validateOrder(order) {
     return true;
 
 }
+/*==========================================
+CONVERT RECEIPT
+==========================================*/
+
+function convertReceiptToBase64(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+
+            const base64 = reader.result.split(",")[1];
+
+            resolve({
+
+                fileName: file.name,
+
+                mimeType: file.type,
+
+                base64: base64
+
+            });
+
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+/*==========================================
+SUBMIT ORDER
+==========================================*/
+
+async function submitOrder(order) {
+
+    try {
+
+        const file = receiptInput.files[0];
+
+        const receipt = await convertReceiptToBase64(file);
+
+        order.receipt = receipt;
+
+        console.log("Sending to:", API_URL);
+        console.log("Payload:", order);
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(order)
+
+        });
+
+        console.log("Response Status:", response.status);
+
+        const text = await response.text();
+
+        console.log("Raw Response:", text);
+
+        const result = JSON.parse(text);
+
+        if (result.success) {
+
+            alert(`✨ Order submitted!\n\nOrder ID: ${result.orderId}`);
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+    } catch (error) {
+
+        console.error("Submit Order Error:", error);
+
+        alert(error.message);
+
+    }
+
+}
 
 /*==========================================
 COMPLETE ORDER
@@ -316,9 +403,11 @@ const completeOrderButton =
 
 if (completeOrderButton) {
 
-    completeOrderButton.addEventListener("click", () => {
+    completeOrderButton.addEventListener("click", async () => {
 
         const order = buildOrder();
+
+        console.log(order);
 
         if (!validateOrder(order)) {
 
@@ -326,7 +415,7 @@ if (completeOrderButton) {
 
         }
 
-        console.log(order);
+        await submitOrder(order);
 
     });
 
