@@ -342,3 +342,33 @@ UPLOAD STATUS
     opacity:.7;
 
 }
+
+/*==========================================
+CHECKOUT SUBMIT
+==========================================*/
+
+.checkout-submit{
+
+    text-align:center;
+
+}
+
+.checkout-submit .primary-btn{
+
+    width:100%;
+
+    margin-bottom:1.25rem;
+
+}
+
+.checkout-note{
+
+    margin-top:1rem;
+
+    font-size:.85rem;
+
+    color:var(--text-light);
+
+    line-height:1.6;
+
+}

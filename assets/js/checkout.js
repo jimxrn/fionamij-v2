@@ -1,4 +1,11 @@
 /*==========================================
+CONFIG
+==========================================*/
+
+const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+
+/*==========================================
 LOAD SELECTED PRODUCT
 ==========================================*/
 
@@ -162,6 +169,164 @@ if (receiptInput && receiptPreview) {
         };
 
         reader.readAsDataURL(file);
+
+    });
+
+}
+
+/*==========================================
+BUILD ORDER
+==========================================*/
+
+function buildOrder() {
+
+    const product = JSON.parse(
+        localStorage.getItem("selectedProduct")
+    );
+
+    return {
+
+        customer: {
+
+            fullName: document.getElementById("customer-name").value.trim(),
+
+            mobile: document.getElementById("customer-mobile").value.trim(),
+
+            email: document.getElementById("customer-email").value.trim()
+
+        },
+
+        shipping: {
+
+            region: document.getElementById("region").value.trim(),
+
+            province: document.getElementById("province").value.trim(),
+
+            city: document.getElementById("city").value.trim(),
+
+            barangay: document.getElementById("barangay").value.trim(),
+
+            street: document.getElementById("street").value.trim(),
+
+            zipcode: document.getElementById("zipcode").value.trim()
+
+        },
+
+        product: product
+
+    };
+
+}
+/*==========================================
+ORDER VALIDATION
+==========================================*/
+
+function validateOrder(order) {
+
+    if (!order.customer.fullName) {
+
+        alert("Please enter your full name.");
+
+        return false;
+
+    }
+
+    if (!order.customer.mobile) {
+
+        alert("Please enter your mobile number.");
+
+        return false;
+
+    }
+
+    if (!order.customer.email) {
+
+        alert("Please enter your email address.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.region) {
+
+        alert("Please select your region.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.province) {
+
+        alert("Please enter your province.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.city) {
+
+        alert("Please enter your city.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.barangay) {
+
+        alert("Please enter your barangay.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.street) {
+
+        alert("Please enter your street address.");
+
+        return false;
+
+    }
+
+    if (!order.shipping.zipcode) {
+
+        alert("Please enter your ZIP Code.");
+
+        return false;
+
+    }
+
+    if (!receiptInput.files.length) {
+
+        alert("Please upload your payment receipt.");
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+/*==========================================
+COMPLETE ORDER
+==========================================*/
+
+const completeOrderButton =
+    document.getElementById("complete-order");
+
+if (completeOrderButton) {
+
+    completeOrderButton.addEventListener("click", () => {
+
+        const order = buildOrder();
+
+        if (!validateOrder(order)) {
+
+            return;
+
+        }
+
+        console.log(order);
 
     });
 
