@@ -74,7 +74,7 @@ selectPieceButton.addEventListener("click", () => {
 
     const selectedProduct = {
 
-        collection: "Cinta",
+        collection: "The Cinta",
 
         name: "The Cinta",
 
