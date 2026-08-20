@@ -41,19 +41,23 @@
             </p>
 
             <h2 class="hero-title">
-                Designed for<br>
-                every version<br>
-                of you
+                Designed for every version of you
             </h2>
 
             <div class="hero-image">
 
-                <!-- Place holder until we add campaign image -->
-                <div class="hero-image-placeholder"></div>
-                <!-- Future Image-->
-                <!-- <img src="images/campaign-image.jpg" alt="Campaign Image"> -->
+               <video
+                    class="hero-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                >
+                     <source
+                    src="assets/images/videos/fionamij-story.mp4"
+                    type="video/mp4">
+                </video>
             </div>
-
 
             <button class="primary-btn">
                 Explore the Cinta Collection
@@ -65,29 +69,128 @@
          CINTA
         ========================== -->
 
-        <section class="collection-story">
+        <section class="collection-section">
 
-            <p class="eyebrow">
-                CHAPTER I
-            </p>
+            <!-- COLLECTION COVER -->
+            <button
+                type="button"
+                class="collection-cover"
+                id="cinta-collection-toggle"
+                aria-expanded="false"
+                aria-controls="cinta-color-grid">
 
-            <h2>
-                the Cinta Collection
-            </h2>
+                <img
+                    src="assets/images/cinta-ivory.jpg"
+                    alt="The Cinta Collection"
+                    class="collection-cover-image">
 
-            <h3>
-                Tied with love.
-            </h3>
+                <div class="collection-cover-content">
 
-            <p class="story">
+                    <p class="collection-cover-eyebrow">
+                        CHAPTER I
+                    </p>
 
-                Every wrap begins with a ribbon.
+                    <h2>
+                        The Cinta
+                    </h2>
 
-                A gentle tie that transforms one piece into many possibilities.
+                    <span>
+                        Explore Collection
+                    </span>
 
-                Created to move with you, adapt with you, and become part of your story.
+                </div>
 
-            </p>
+            </button>
+
+            <!-- COLOR TILES -->
+            <div
+                class="cinta-modal"
+                id="cinta-modal"
+                aria-hidden="true">
+
+                <!-- CLOSE BUTTON -->
+                <div class="cinta-modal-inner">
+                    <button
+                        type="button"
+                        class="cinta-modal-close"
+                        id="cinta-modal-close"
+                        aria-label="Close collection">
+                        ×
+                    </button>
+
+                    <div class="cinta-modal-header">
+                        <p class="eyebrow">
+                            CHAPTER I
+                        </p>
+
+                        <h2>
+                            The Cinta
+                        </h2>
+
+                        <p>
+                            Tied with love.
+                        </p>
+                    </div>
+                    
+                    <div class="cinta-color-grid">
+
+                   
+                        <button
+                            type="button"
+                            class="cinta-color-tile"
+                            data-collection-color="Black">
+
+                        <img
+                            src="assets/images/cinta-black.jpg"
+                            alt="The Cinta in Black">
+
+                            <span>Black</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cinta-color-tile"
+                            data-collection-color="Sage">
+
+                            <img
+                                src="assets/images/cinta-sage.jpg"
+                                alt="The Cinta in Sage">
+
+                            <span>Sage</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cinta-color-tile"
+                            data-collection-color="Ivory">
+
+                            <img
+                                src="assets/images/cinta-ivory.jpg"
+                                alt="The Cinta in Ivory">
+
+                            <span>Ivory</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cinta-color-tile"
+                            data-collection-color="Blush">
+
+                            <img
+                                src="assets/images/cinta-blush.jpg"
+                                alt="The Cinta in Blush">
+
+                            <span>Blush</span>
+
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
 
         </section>
 
@@ -106,6 +209,21 @@
                 Every piece begins with the same ribbon,
                 but every woman wears it differently.
             </p>
+
+            <div class="pieces-cta">
+                <p class="eyebrow">
+                    YOUR PIECE
+                </p>
+
+                <h3>
+                    Find the one that feels like you
+                </h3>
+
+                <p>
+                    Choose your color and size.
+                </p>
+
+            </div>
 
         
 
@@ -231,7 +349,7 @@
 
                             <p class="selected-size">
 
-                                 Small
+                                 S
 
                             </p>
 
@@ -267,6 +385,8 @@
     <script src="assets/js/ui.js" defer></script>
     <script src="assets/js/checkout.js" defer></script>
     <script src="assets/js/app.js" defer></script>
+
+    
 
 </body>
 

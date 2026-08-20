@@ -171,7 +171,400 @@ if (receiptInput && receiptPreview) {
     });
 
 }
+/*==========================================
+PAYMENT METHOD
+==========================================*/
 
+const paymentOptions =
+    document.querySelectorAll('input[name="payment"]');
+
+const paymentTitle =
+    document.getElementById("payment-details-title");
+
+const paymentAccountLabel =
+    document.getElementById("payment-account-label");
+
+const paymentAccountName =
+    document.getElementById("payment-account-name");
+
+const paymentNumberLabel =
+    document.getElementById("payment-number-label");
+
+const paymentNumber =
+    document.getElementById("payment-number");
+
+
+function updatePaymentDetails() {
+
+    const selected =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+    if (!selected) return;
+
+
+    if (selected.value === "GCash") {
+
+        paymentTitle.textContent = "GCash";
+
+        paymentAccountLabel.textContent =
+            "Account Name:";
+
+        paymentAccountName.textContent =
+            "FIONAMIJ";
+
+        paymentNumberLabel.textContent =
+            "Mobile Number:";
+
+        paymentNumber.textContent =
+            "09XX XXX XXXX";
+
+    }
+
+
+    if (selected.value === "Bank Transfer") {
+
+        paymentTitle.textContent =
+            "Bank Transfer";
+
+        paymentAccountLabel.textContent =
+            "Account Name:";
+
+        paymentAccountName.textContent =
+            "FIONAMIJ";
+
+        paymentNumberLabel.textContent =
+            "Account Number:";
+
+        paymentNumber.textContent =
+            "YOUR BANK ACCOUNT NUMBER";
+
+    }
+
+}
+
+
+paymentOptions.forEach((option) => {
+
+    option.addEventListener(
+        "change",
+        updatePaymentDetails
+    );
+
+});
+
+
+updatePaymentDetails();
+
+/*==========================================
+VOUCHER
+==========================================*/
+
+let appliedVoucher = null;
+let voucherDiscount = 0;
+
+/*
+ * TEMPORARY VOUCHER DATABASE
+ * We'll eventually move this to Google Sheets
+ * so vouchers can be managed without editing code.
+ */
+const VOUCHERS = {
+    "WELCOME10": {
+        type: "percentage",
+        value: 10,
+        minimumSpend: 0,
+        active: true
+    },
+
+    "FIONA100": {
+        type: "fixed",
+        value: 100,
+        minimumSpend: 1000,
+        active: true
+    }
+};
+
+
+/*==========================================
+VOUCHER ELEMENTS
+==========================================*/
+
+const voucherInput =
+    document.getElementById("voucher-code");
+
+const applyVoucherButton =
+    document.getElementById("apply-voucher");
+
+const voucherDisplay =
+    document.getElementById("voucher-display");
+
+const subtotalElement =
+    document.getElementById("checkout-subtotal");
+
+const totalElement =
+    document.getElementById("checkout-total");
+
+
+/*==========================================
+GET SUBTOTAL
+==========================================*/
+
+function getSubtotal() {
+
+    const product =
+        JSON.parse(localStorage.getItem("selectedProduct"));
+
+    if (!product || !product.price) {
+        return 0;
+    }
+
+    return Number(product.price);
+}
+
+
+/*==========================================
+UPDATE TOTAL
+==========================================*/
+
+function updateCheckoutTotal() {
+
+    const subtotal = getSubtotal();
+
+    const shipping = 0; // Shipping will be added later
+
+    const total =
+        Math.max(0, subtotal + shipping - voucherDiscount);
+
+    if (subtotalElement) {
+        subtotalElement.textContent =
+            `₱${subtotal.toLocaleString()}`;
+    }
+
+    if (totalElement) {
+        totalElement.textContent =
+            `₱${total.toLocaleString()}`;
+    }
+
+    if (voucherDisplay) {
+
+        if (appliedVoucher) {
+
+            voucherDisplay.textContent =
+                `-${formatCurrency(voucherDiscount)}`;
+
+        } else {
+
+            voucherDisplay.textContent = "None";
+
+        }
+
+    }
+}
+
+
+/*==========================================
+FORMAT CURRENCY
+==========================================*/
+
+function formatCurrency(amount) {
+
+    return `₱${Number(amount).toLocaleString()}`;
+
+}
+
+
+/*==========================================
+APPLY VOUCHER
+==========================================*/
+
+function applyVoucher() {
+
+    if (!voucherInput) return;
+
+    const code =
+        voucherInput.value.trim().toUpperCase();
+
+    if (!code) {
+
+      showVoucherModal(
+        "Please enter a voucher code."
+    );
+    }
+
+    const voucher = VOUCHERS[code];
+
+    if (!voucher || !voucher.active) {
+
+        showVoucherModal(
+            "The voucher code is invalid or inactive."
+        );
+
+        appliedVoucher = null;
+        voucherDiscount = 0;
+
+        updateCheckoutTotal();
+
+        return;
+    }
+
+
+    const subtotal = getSubtotal();
+
+
+    /*----------------------------------------
+    MINIMUM SPEND
+    ----------------------------------------*/
+
+    if (subtotal < voucher.minimumSpend) {
+
+        showVoucherModal(
+            `This voucher requires a minimum spend of ${formatCurrency(voucher.minimumSpend)}.`
+        );
+
+        appliedVoucher = null;
+        voucherDiscount = 0;
+
+        updateCheckoutTotal();
+
+        return;
+    }
+
+
+    /*----------------------------------------
+    CALCULATE DISCOUNT
+    ----------------------------------------*/
+
+    let discount = 0;
+
+    if (voucher.type === "percentage") {
+
+        discount =
+            subtotal * (voucher.value / 100);
+
+    }
+
+    if (voucher.type === "fixed") {
+
+        discount =
+            voucher.value;
+
+    }
+
+
+    /*----------------------------------------
+    NEVER DISCOUNT BELOW ZERO
+    ----------------------------------------*/
+
+    discount =
+        Math.min(discount, subtotal);
+
+
+    appliedVoucher = {
+        code: code,
+        type: voucher.type,
+        value: voucher.value
+    };
+
+    voucherDiscount = discount;
+
+
+    /*----------------------------------------
+    UPDATE UI
+    ----------------------------------------*/
+
+    updateCheckoutTotal();
+
+    voucherInput.value = code;
+
+    showVoucherModal(
+        `${code} applied! You saved ${formatCurrency(discount)}.`,
+        "Voucher Applied"
+    );
+}
+/*==========================================
+VOUCHER MODAL
+==========================================*/
+
+const voucherModal =
+    document.getElementById("voucher-modal");
+
+const voucherModalTitle =
+    document.getElementById("voucher-modal-title");
+
+const voucherModalMessage =
+    document.getElementById("voucher-modal-message");
+
+const voucherModalClose =
+    document.getElementById("voucher-modal-close");
+
+
+function showVoucherModal(message, title = "Voucher") {
+
+    if (!voucherModal) return;
+
+    voucherModalTitle.textContent = title;
+
+    voucherModalMessage.textContent = message;
+
+    voucherModal.classList.add("active");
+
+}
+
+
+function closeVoucherModal() {
+
+    if (!voucherModal) return;
+
+    voucherModal.classList.remove("active");
+
+}
+
+
+if (voucherModalClose) {
+
+    voucherModalClose.addEventListener(
+        "click",
+        closeVoucherModal
+    );
+
+}
+
+
+if (voucherModal) {
+
+    voucherModal.addEventListener(
+        "click",
+        (event) => {
+
+            if (event.target === voucherModal) {
+                closeVoucherModal();
+            }
+
+        }
+    );
+
+}
+
+/*==========================================
+APPLY BUTTON
+==========================================*/
+
+if (applyVoucherButton) {
+
+    applyVoucherButton.addEventListener(
+        "click",
+        applyVoucher
+    );
+
+}
+
+
+/*==========================================
+INITIAL TOTAL
+==========================================*/
+
+updateCheckoutTotal();
 /*==========================================
 BUILD ORDER
 ==========================================*/
@@ -210,7 +603,34 @@ function buildOrder() {
 
         },
 
-        product: product
+        payment: {
+
+            method:
+                document.querySelector(
+                    'input[name="payment"]:checked'
+                )?.value || ""
+
+        },
+
+        product: product,
+
+        voucher: appliedVoucher
+            ? {
+                code: appliedVoucher.code,
+                type: appliedVoucher.type,
+                value: appliedVoucher.value,
+                discount: voucherDiscount
+        }   
+        : null,
+
+        pricing: {
+                subtotal: getSubtotal(),
+                voucherDiscount: voucherDiscount,
+                total: Math.max(
+                    0,
+                    getSubtotal() - voucherDiscount
+            )
+        }    
 
     };
 

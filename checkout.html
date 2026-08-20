@@ -405,9 +405,10 @@
 
                         </div>
 
-                        <div class="payment-details">
+                        <div class="payment-details"
+                                id="payment-details">
 
-                            <h3>
+                            <h3 id= "payment-details-title">
 
                                 GCash
 
@@ -415,22 +416,24 @@
 
                             <p>
 
-                                Account Name:
-                                <strong>
+                                <span id="payment-account-label">
+                                    Account Name:
+                                </span>
 
+                                <strong id="payment-account-name">
                                     FIONAMIJ
-
                                 </strong>
 
                             </p>
 
                             <p>
 
-                                Mobile Number:
-                                <strong>
+                                <span id="payment-number-label">
+                                    Mobile Number:
+                                </span>
 
+                                <strong id="payment-number">
                                     09XX XXX XXXX
-
                                 </strong>
 
                             </p>
@@ -515,44 +518,6 @@
 
                 </section>
 
-                <!--==========================================
-                 COMPLETE ORDER
-                ==========================================-->
-
-                <section class="checkout-section">
-
-                    <div class="checkout-card checkout-submit">
-
-                        <button
-                            type="button"
-                            id="complete-order"
-                            class="primary-btn">
-
-                            Complete My Order
-
-                        </button>
-
-                        <p class="checkout-note">
-
-                            Once we receive your order, we'll review your payment and send your confirmation shortly. Thank you for choosing FIONAMIJ ♡
-
-                        </p>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-                <!--======================================
-                SIDEBAR
-                ======================================-->
-
-            <aside class="checkout-sidebar">
-
-                <!--==================================
-                ORDER SUMMARY
-                ==================================-->
                 <section class="checkout-section">
 
                     <div class="checkout-card">
@@ -657,6 +622,38 @@
 
                         </div>
 
+                        <!-- VOUCHER -->
+
+                        <div class="voucher-box">
+
+                            <label for="voucher-code">
+                                Voucher Code
+                            </label>
+
+                            <div class="voucher-input-row">
+
+                                <input
+                                    type="text"
+                                    id="voucher-code"
+                                    placeholder="Enter voucher code"
+                                    autocomplete="off">
+                                <button
+                                    type="button"
+                                    id="apply-voucher"
+                                    class="secondary-btn">
+                                    Apply
+
+                                </button>
+
+                            </div>
+                            <p
+                                id="voucher-message"
+                                class="voucher-message"
+                                aria-live="polite">
+                            </p>
+
+                        </div>
+
                         <div class="summary-row">
 
                             <span>
@@ -695,7 +692,34 @@
 
                 </section>
 
-            </aside>
+                <!--==========================================
+                 COMPLETE ORDER
+                ==========================================-->
+
+                <section class="checkout-section">
+
+                    <div class="checkout-card checkout-submit">
+
+                        <button
+                            type="button"
+                            id="complete-order"
+                            class="primary-btn">
+
+                            Complete My Order
+
+                        </button>
+
+                        <p class="checkout-note">
+
+                            Once we receive your order, we'll review your payment and send your confirmation shortly. Thank you for choosing FIONAMIJ ♡
+
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </div>
 
         </div>
 
@@ -707,6 +731,30 @@
 <script src="assets/js/api.js" defer></script>
 <script src="assets/js/ui.js" defer></script>
 <script src="assets/js/checkout.js" defer></script>
+
+<!-- VOUCHER MODAL -->
+<div id="voucher-modal" class="voucher-modal">
+    <div class="voucher-modal-card">
+
+        <div class="voucher-modal-icon">♡</div>
+
+        <h3 id="voucher-modal-title">
+            Voucher
+        </h3>
+
+        <p id="voucher-modal-message">
+            Please enter a voucher code.
+        </p>
+
+        <button
+            type="button"
+            id="voucher-modal-close"
+            class="voucher-modal-button">
+            OK
+        </button>
+
+    </div>
+</div>
 
 </body>
 
