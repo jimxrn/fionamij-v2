@@ -1854,3 +1854,114 @@ VOUCHER MODAL
     }
 
 }
+/* =========================================
+   FIONAMIJ CHECKOUT UI
+========================================= */
+
+/* CHECKOUT CARDS */
+.checkout-card {
+    background: #FFFFFF;
+    border: 1px solid #ECE7E1;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(47, 42, 42, 0.04);
+}
+
+/* SECTION TITLES */
+.checkout-card h2,
+.checkout-card h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #2F2A2A;
+}
+
+/* FORM GROUP */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.form-group label {
+    color: #6F6865;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+}
+
+/* INPUTS */
+.checkout input,
+.checkout select,
+.checkout textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #E7E1DC;
+    border-radius: 12px;
+    background: #FFFFFF;
+    color: #2F2A2A;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.checkout input:focus,
+.checkout select:focus,
+.checkout textarea:focus {
+    border-color: #D9B9B5;
+    box-shadow: 0 0 0 3px rgba(235, 210, 206, .25);
+}
+/* ==========================================
+   CHECKOUT RESPONSIVE LAYOUT
+========================================== */
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+
+    .checkout-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .checkout-sidebar {
+        order: -1;
+        width: 100%;
+        position: static;
+    }
+
+    .checkout-main {
+        width: 100%;
+    }
+
+}
+
+
+/* DESKTOP */
+@media (min-width: 992px) {
+
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .checkout-main {
+        min-width: 0;
+        grid-column: 1;
+    }
+
+    .checkout-sidebar {
+        min-width: 0;
+        grid-column: 2;
+        grid-row: 1;
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+    }
+
+}

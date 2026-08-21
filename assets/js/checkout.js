@@ -1,8 +1,11 @@
 /*==========================================
 CONFIG
 ==========================================*/
-const API_URL = "https://script.google.com/macros/s/AKfycbzJm4X3iiUV4A1suUPvE_WMSQH34lgHT7PFksZbToMebkC29V4di-7bv1Y_0eWqL-33/exec";
+const APPS_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbxFuz_-_DF5zIB-GJEKBt2TAJbafiYS47wF2G5vtuiSTyXIPK_Cr7gLCKTvbv_9ZZsy/exec";
 
+const API_URL =
+    "https://script.google.com/macros/s/AKfycbzJm4X3iiUV4A1suUPvE_WMSQH34lgHT7PFksZbToMebkC29V4di-7bv1Y_0eWqL-33/exec";
 /*==========================================
 LOAD SELECTED PRODUCT
 ==========================================*/
@@ -277,11 +280,13 @@ const VOUCHERS = {
         active: true
     },
 
-    "FIONA100": {
+    "HIRAYA199": {
         type: "fixed",
-        value: 100,
-        minimumSpend: 1000,
-        active: true
+        value: 199,
+        active: true,
+        restricted: true,
+        emailRequired: true,
+        oneTimePerRecipient: true
     }
 };
 
@@ -300,10 +305,10 @@ const voucherDisplay =
     document.getElementById("voucher-display");
 
 const subtotalElement =
-    document.getElementById("checkout-subtotal");
+    document.getElementById("summary-subtotal");
 
 const totalElement =
-    document.getElementById("checkout-total");
+    document.getElementById("summary-total");
 
 
 /*==========================================
@@ -335,6 +340,13 @@ function updateCheckoutTotal() {
 
     const total =
         Math.max(0, subtotal + shipping - voucherDiscount);
+
+    console.log("UPDATE TOTAL RUNNING");
+    console.log("subtotal:", subtotal);
+    console.log("voucherDiscount:", voucherDiscount);
+    console.log("total:", total);
+    console.log("voucherDisplay:", voucherDisplay);
+    console.log("totalElement:", totalElement);
 
     if (subtotalElement) {
         subtotalElement.textContent =
@@ -377,110 +389,216 @@ function formatCurrency(amount) {
 /*==========================================
 APPLY VOUCHER
 ==========================================*/
+function normalizeEmail(email) {
 
-function applyVoucher() {
+    return email
+        .trim()
+        .toLowerCase();
+
+}
+/*==========================================
+  APPLY VOUCHER — OMS VALIDATION
+==========================================*/
+
+async function applyVoucher() {
 
     if (!voucherInput) return;
 
+
     const code =
-        voucherInput.value.trim().toUpperCase();
+        voucherInput.value
+            .trim()
+            .toUpperCase();
+
 
     if (!code) {
 
-      showVoucherModal(
-        "Please enter a voucher code."
+        showVoucherModal(
+            "Please enter a voucher code."
+        );
+
+        return;
+    }
+
+
+    /*========================================
+      CUSTOMER EMAIL
+    ========================================*/
+
+    const emailInput =
+        document.getElementById(
+            "customer-email"
+        );
+
+
+    const email =
+        emailInput
+            ? emailInput.value.trim().toLowerCase()
+            : "";
+
+
+    if (!email) {
+
+        showVoucherModal(
+            "Please enter your email address before applying a voucher."
+        );
+
+        return;
+    }
+
+
+    /*========================================
+      SUBTOTAL
+    ========================================*/
+
+    const subtotal =
+        getSubtotal();
+
+
+    /*========================================
+      DISABLE BUTTON
+    ========================================*/
+
+    if (applyVoucherButton) {
+
+        applyVoucherButton.disabled = true;
+
+        applyVoucherButton.textContent =
+            "Checking...";
+
+    }
+/*========================================
+  CALL OMS
+========================================*/
+
+try {
+
+    const response = await fetch(
+        APPS_SCRIPT_URL,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify({
+                action: "validateVoucher",
+                email: email,
+                code: code,
+                subtotal: subtotal
+            })
+        }
     );
+
+
+    const result =
+        await response.json();
+
+
+    /*----------------------------------------
+      RESTORE BUTTON
+    ----------------------------------------*/
+
+    if (applyVoucherButton) {
+
+        applyVoucherButton.disabled = false;
+
+        applyVoucherButton.textContent =
+            "Apply";
+
     }
 
-    const voucher = VOUCHERS[code];
 
-    if (!voucher || !voucher.active) {
+    /*----------------------------------------
+      INVALID
+    ----------------------------------------*/
 
-        showVoucherModal(
-            "The voucher code is invalid or inactive."
-        );
+    if (!result.valid) {
 
         appliedVoucher = null;
+
         voucherDiscount = 0;
 
         updateCheckoutTotal();
+
+        showVoucherModal(
+            result.message ||
+                "This voucher isn't available.",
+            "Voucher"
+        );
 
         return;
     }
 
 
-    const subtotal = getSubtotal();
-
-
     /*----------------------------------------
-    MINIMUM SPEND
+      VALID
     ----------------------------------------*/
-
-    if (subtotal < voucher.minimumSpend) {
-
-        showVoucherModal(
-            `This voucher requires a minimum spend of ${formatCurrency(voucher.minimumSpend)}.`
-        );
-
-        appliedVoucher = null;
-        voucherDiscount = 0;
-
-        updateCheckoutTotal();
-
-        return;
-    }
-
-
-    /*----------------------------------------
-    CALCULATE DISCOUNT
-    ----------------------------------------*/
-
-    let discount = 0;
-
-    if (voucher.type === "percentage") {
-
-        discount =
-            subtotal * (voucher.value / 100);
-
-    }
-
-    if (voucher.type === "fixed") {
-
-        discount =
-            voucher.value;
-
-    }
-
-
-    /*----------------------------------------
-    NEVER DISCOUNT BELOW ZERO
-    ----------------------------------------*/
-
-    discount =
-        Math.min(discount, subtotal);
-
 
     appliedVoucher = {
-        code: code,
-        type: voucher.type,
-        value: voucher.value
+
+        code: result.code,
+
+        type: result.type,
+
+        value: result.value,
+
+        email: email
+
     };
 
-    voucherDiscount = discount;
+
+    voucherDiscount =
+        Number(result.discount) || 0;
 
 
+    console.log("VOUCHER RESULT:", result);
+    console.log("VOUCHER DISCOUNT:", voucherDiscount);
+    console.log("APPLIED VOUCHER:", appliedVoucher);
     /*----------------------------------------
-    UPDATE UI
+      UPDATE CHECKOUT
     ----------------------------------------*/
 
     updateCheckoutTotal();
 
-    voucherInput.value = code;
+
+    voucherInput.value =
+        result.code;
+
 
     showVoucherModal(
-        `${code} applied! You saved ${formatCurrency(discount)}.`,
+        `${result.code} applied! You saved ${formatCurrency(voucherDiscount)}.`,
         "Voucher Applied"
     );
+
+
+} catch (error) {
+
+    console.error(
+        "Voucher API Error:",
+        error
+    );
+
+
+    if (applyVoucherButton) {
+
+        applyVoucherButton.disabled = false;
+
+        applyVoucherButton.textContent =
+            "Apply";
+
+    }
+
+
+    showVoucherModal(
+        "We couldn't validate the voucher right now. Please try again.",
+        "Voucher"
+    );
+
+    }
+
 }
 /*==========================================
 VOUCHER MODAL
@@ -507,6 +625,8 @@ function showVoucherModal(message, title = "Voucher") {
 
     voucherModalMessage.textContent = message;
 
+    voucherModalMessage.style.whiteSpace = "pre-line";
+
     voucherModal.classList.add("active");
 
 }
@@ -518,34 +638,136 @@ function closeVoucherModal() {
 
     voucherModal.classList.remove("active");
 
+    voucherModal.style.display = "";
+
 }
 
+
+/*==========================================
+MODAL OK BUTTON
+==========================================*/
 
 if (voucherModalClose) {
 
     voucherModalClose.addEventListener(
         "click",
-        closeVoucherModal
-    );
+        function () {
 
-}
+            const isOrderSubmitted =
+                voucherModalTitle &&
+                voucherModalTitle.textContent ===
+                    "Order Submitted";
 
 
-if (voucherModal) {
+            closeVoucherModal();
 
-    voucherModal.addEventListener(
-        "click",
-        (event) => {
 
-            if (event.target === voucherModal) {
-                closeVoucherModal();
+            /*====================================
+              RESET ONLY AFTER ORDER SUBMITTED
+            ====================================*/
+
+            if (isOrderSubmitted) {
+
+                /* Clear customer details */
+
+                const customerFields = [
+                    "customer-name",
+                    "customer-mobile",
+                    "customer-email"
+                ];
+
+                customerFields.forEach(function (id) {
+
+                    const field =
+                        document.getElementById(id);
+
+                    if (field) {
+                        field.value = "";
+                    }
+
+                });
+
+
+                /* Clear shipping details */
+
+                const shippingFields = [
+                    "region",
+                    "province",
+                    "city",
+                    "barangay",
+                    "street",
+                    "zipcode"
+                ];
+
+                shippingFields.forEach(function (id) {
+
+                    const field =
+                        document.getElementById(id);
+
+                    if (field) {
+                        field.value = "";
+                    }
+
+                });
+
+
+                /* Clear payment selection */
+
+                document
+                    .querySelectorAll(
+                        'input[name="payment"]'
+                    )
+                    .forEach(function (radio) {
+
+                        radio.checked = false;
+
+                    });
+
+
+                /* Clear receipt */
+
+                if (receiptInput) {
+
+                    receiptInput.value = "";
+
+                }
+
+
+                /* Clear receipt preview */
+
+                if (receiptPreview) {
+
+                    receiptPreview.src = "";
+
+                    receiptPreview.style.display =
+                        "none";
+
+                }
+
+
+                /* Clear voucher */
+
+                if (voucherInput) {
+
+                    voucherInput.value = "";
+
+                }
+
+                appliedVoucher = null;
+
+                voucherDiscount = 0;
+
+
+                /* Refresh checkout */
+
+                window.location.reload();
+
             }
 
         }
     );
 
 }
-
 /*==========================================
 APPLY BUTTON
 ==========================================*/
@@ -758,62 +980,168 @@ function convertReceiptToBase64(file) {
 
 }
 /*==========================================
-SUBMIT ORDER
+  SUBMIT ORDER
 ==========================================*/
 
 async function submitOrder(order) {
 
     try {
 
-        const file = receiptInput.files[0];
+        const file =
+            receiptInput.files[0];
 
-        const receipt = await convertReceiptToBase64(file);
+        const receipt =
+            await convertReceiptToBase64(file);
 
         order.receipt = receipt;
 
-        console.log("Sending to:", API_URL);
-        console.log("Payload:", order);
+        console.log(
+            "Sending to:",
+            APPS_SCRIPT_URL
+        );
 
-        const response = await fetch(API_URL, {
+        console.log(
+            "Payload:",
+            order
+        );
 
-            method: "POST",
+        const response =
+            await fetch(API_URL, {
 
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
+                method: "POST",
 
-            body: JSON.stringify(order)
+                headers: {
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+                },
 
-        });
+                body:
+                    JSON.stringify(order)
 
-        console.log("Response Status:", response.status);
+            });
 
-        const text = await response.text();
 
-        console.log("Raw Response:", text);
+        console.log(
+            "Response Status:",
+            response.status
+        );
 
-        const result = JSON.parse(text);
+
+        const text =
+            await response.text();
+
+        console.log(
+            "Raw Response:",
+            text
+        );
+
+
+        const result =
+            JSON.parse(text);
+
+
+        /*====================================
+          ORDER SUCCESS
+        ====================================*/
 
         if (result.success) {
 
-            alert(`✨ Order submitted!\n\nOrder ID: ${result.orderId}`);
+            /*--------------------------------
+              REDEEM HIRAYA199
+            --------------------------------*/
+
+            if (
+                order.voucher &&
+                order.voucher.code ===
+                    "HIRAYA199"
+            ) {
+
+                const redeemResponse =
+                    await fetch(
+                        APPS_SCRIPT_URL,
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    action:
+                                        "redeemVoucher",
+
+                                    email:
+                                        order.customer.email,
+
+                                    code:
+                                        order.voucher.code,
+
+                                    orderId:
+                                        result.orderId
+
+                                })
+
+                        }
+                    );
+
+
+                const redeemResult =
+                    await redeemResponse.json();
+
+
+                console.log(
+                    "Voucher Redemption:",
+                    redeemResult
+                );
+
+
+                if (!redeemResult.success) {
+
+                    console.error(
+                        "Voucher redemption failed:",
+                        redeemResult.message
+                    );
+
+                }
+
+            }
+
+            
+
+            showVoucherModal(
+                `Thank you for your order ♡\n\nOrder ID\n${result.orderId}`,
+                "Order Submitted"
+                );
+
 
         } else {
 
             alert(result.message);
 
         }
+        
+        
+    }
 
-    } catch (error) {
 
-        console.error("Submit Order Error:", error);
+    catch (error) {
 
-        alert(error.message);
+        console.error(
+            "Submit Order Error:",
+            error
+        );
+
+        alert(
+            error.message
+        );
 
     }
 
 }
-
 /*==========================================
 COMPLETE ORDER
 ==========================================*/
