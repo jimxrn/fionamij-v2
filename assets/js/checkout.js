@@ -474,7 +474,7 @@ async function applyVoucher() {
 try {
 
     const response = await fetch(
-        APPS_SCRIPT_URL,
+        API_URL,
         {
             method: "POST",
 
@@ -696,7 +696,7 @@ if (voucherModalClose) {
                     "city",
                     "barangay",
                     "street",
-                    "zipcode"
+                    "zipCode"
                 ];
 
                 shippingFields.forEach(function (id) {
@@ -821,7 +821,7 @@ function buildOrder() {
 
             street: document.getElementById("street").value.trim(),
 
-            zipcode: document.getElementById("zipcode").value.trim()
+            zipCode: document.getElementById("zipcode").value.trim()
 
         },
 
@@ -863,89 +863,161 @@ ORDER VALIDATION
 
 function validateOrder(order) {
 
-    if (!order.customer.fullName) {
+    const missing = [];
 
-        alert("Please enter your full name.");
+
+    /*----------------------------------------
+      CUSTOMER DETAILS
+    ----------------------------------------*/
+
+    if (!order.customer.fullName?.trim()) {
+
+        missing.push("Full Name");
+
+    }
+
+    if (!order.customer.mobile?.trim()) {
+
+        missing.push("Mobile Number");
+
+    }
+
+    if (!order.customer.email?.trim()) {
+
+        missing.push("Email Address");
+
+    }
+
+
+    /*----------------------------------------
+      SHIPPING DETAILS
+    ----------------------------------------*/
+
+    if (!order.shipping.region?.trim()) {
+
+        missing.push("Region");
+
+    }
+
+    if (!order.shipping.province?.trim()) {
+
+        missing.push("Province");
+
+    }
+
+    if (!order.shipping.city?.trim()) {
+
+        missing.push("City / Municipality");
+
+    }
+
+    if (!order.shipping.barangay?.trim()) {
+
+        missing.push("Barangay");
+
+    }
+
+    if (!order.shipping.street?.trim()) {
+
+        missing.push("Street Address");
+
+    }
+
+    if (!order.shipping.zipCode?.trim()) {
+
+        missing.push("ZIP Code");
+
+    }
+
+
+    /*----------------------------------------
+      PAYMENT
+    ----------------------------------------*/
+
+    if (!order.payment?.method) {
+
+        missing.push("Payment Method");
+
+    }
+
+
+    /*----------------------------------------
+      RECEIPT
+    ----------------------------------------*/
+
+    if (
+        !receiptInput ||
+        !receiptInput.files ||
+        !receiptInput.files.length
+    ) {
+
+        missing.push("Proof of Payment");
+
+    }
+
+
+    /*----------------------------------------
+      SHOW ALL MISSING FIELDS
+    ----------------------------------------*/
+
+    if (missing.length > 0) {
+
+        showValidationModal(missing);
 
         return false;
 
     }
 
-    if (!order.customer.mobile) {
-
-        alert("Please enter your mobile number.");
-
-        return false;
-
-    }
-
-    if (!order.customer.email) {
-
-        alert("Please enter your email address.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.region) {
-
-        alert("Please select your region.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.province) {
-
-        alert("Please enter your province.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.city) {
-
-        alert("Please enter your city.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.barangay) {
-
-        alert("Please enter your barangay.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.street) {
-
-        alert("Please enter your street address.");
-
-        return false;
-
-    }
-
-    if (!order.shipping.zipcode) {
-
-        alert("Please enter your ZIP Code.");
-
-        return false;
-
-    }
-
-    if (!receiptInput.files.length) {
-
-        alert("Please upload your payment receipt.");
-
-        return false;
-
-    }
 
     return true;
 
 }
+/*==========================================
+  FIONAMIJ VALIDATION MODAL
+==========================================*/
+
+function showValidationModal(missing) {
+
+    const modal =
+        document.getElementById("validation-modal");
+
+    const list =
+        document.getElementById("validation-missing-list");
+
+    list.innerHTML = "";
+
+    missing.forEach(item => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent = item;
+
+        list.appendChild(li);
+
+    });
+
+    modal.classList.add("active");
+
+}
+
+
+function closeValidationModal() {
+
+    const modal =
+        document.getElementById("validation-modal");
+
+    modal.classList.remove("active");
+
+}
+
+
+document
+    .getElementById("validation-modal-close")
+    .addEventListener(
+        "click",
+        closeValidationModal
+    );
 /*==========================================
 CONVERT RECEIPT
 ==========================================*/
@@ -997,7 +1069,7 @@ async function submitOrder(order) {
 
         console.log(
             "Sending to:",
-            APPS_SCRIPT_URL
+            API_URL
         );
 
         console.log(
@@ -1110,15 +1182,17 @@ async function submitOrder(order) {
 
             }
 
-            
+            hideProcessingModal();
 
             showVoucherModal(
                 `Thank you for your order ♡\n\nOrder ID\n${result.orderId}`,
                 "Order Submitted"
-                );
+            );
 
 
         } else {
+
+            hideProcessingModal();
 
             alert(result.message);
 
@@ -1130,6 +1204,8 @@ async function submitOrder(order) {
 
     catch (error) {
 
+        hideProcessingModal();
+
         console.error(
             "Submit Order Error:",
             error
@@ -1138,6 +1214,36 @@ async function submitOrder(order) {
         alert(
             error.message
         );
+
+    }
+
+}
+/*==========================================
+  FIONAMIJ PROCESSING MODAL
+==========================================*/
+
+function showProcessingModal() {
+
+    const modal =
+        document.getElementById("processing-modal");
+
+    if (modal) {
+
+        modal.classList.add("active");
+
+    }
+
+}
+
+
+function hideProcessingModal() {
+
+    const modal =
+        document.getElementById("processing-modal");
+
+    if (modal) {
+
+        modal.classList.remove("active");
 
     }
 
@@ -1163,6 +1269,7 @@ if (completeOrderButton) {
 
         }
 
+        showProcessingModal();
 
         await submitOrder(order);
 
