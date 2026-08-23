@@ -207,22 +207,27 @@ function updatePaymentDetails() {
     if (!selected) return;
 
 
+    const paymentTitle =
+        document.getElementById("payment-details-title");
+
+    const paymentQr =
+        document.getElementById("payment-qr");
+
+    const paymentInstruction =
+        document.getElementById("payment-instruction");
+
+
     if (selected.value === "GCash") {
 
-        paymentTitle.textContent = "GCash";
+        paymentTitle.textContent =
+            "GCash";
 
-        paymentAccountLabel.textContent =
-            "Account Name:";
+        paymentInstruction.textContent =
+            "Scan the QR code to complete your payment.";
 
-        paymentAccountName.textContent =
-            "FIONAMIJ";
-
-        paymentNumberLabel.textContent =
-            "Mobile Number:";
-
-        paymentNumber.textContent =
-            "09XX XXX XXXX";
-
+        // Temporary mock QR
+        paymentQr.src =
+            "https://drive.google.com/thumbnail?id=1A7x3us7XPl7ZAF0jk0r0FggI28I7RcoJ&sz=w1000";
     }
 
 
@@ -231,18 +236,12 @@ function updatePaymentDetails() {
         paymentTitle.textContent =
             "Bank Transfer";
 
-        paymentAccountLabel.textContent =
-            "Account Name:";
+        paymentInstruction.textContent =
+            "Scan the QR code to complete your payment.";
 
-        paymentAccountName.textContent =
-            "FIONAMIJ";
-
-        paymentNumberLabel.textContent =
-            "Account Number:";
-
-        paymentNumber.textContent =
-            "YOUR BANK ACCOUNT NUMBER";
-
+        // Temporary mock QR
+        paymentQr.src =
+            "https://drive.google.com/thumbnail?id=1f5btgUgqpFAv7kSljs5I0m4Xu9rMCNzs&sz=w1000";
     }
 
 }
@@ -811,17 +810,17 @@ function buildOrder() {
 
         shipping: {
 
-            region: document.getElementById("region").value.trim(),
+            region: "",
 
-            province: document.getElementById("province").value.trim(),
+            province: "",
 
-            city: document.getElementById("city").value.trim(),
+            city: "",
 
-            barangay: document.getElementById("barangay").value.trim(),
+            barangay: "",
 
-            street: document.getElementById("street").value.trim(),
+            street: document.getElementById("shipping-address").value.trim(),
 
-            zipCode: document.getElementById("zipcode").value.trim()
+            zipCode: "",
 
         },
 
@@ -893,40 +892,8 @@ function validateOrder(order) {
       SHIPPING DETAILS
     ----------------------------------------*/
 
-    if (!order.shipping.region?.trim()) {
-
-        missing.push("Region");
-
-    }
-
-    if (!order.shipping.province?.trim()) {
-
-        missing.push("Province");
-
-    }
-
-    if (!order.shipping.city?.trim()) {
-
-        missing.push("City / Municipality");
-
-    }
-
-    if (!order.shipping.barangay?.trim()) {
-
-        missing.push("Barangay");
-
-    }
-
     if (!order.shipping.street?.trim()) {
-
-        missing.push("Street Address");
-
-    }
-
-    if (!order.shipping.zipCode?.trim()) {
-
-        missing.push("ZIP Code");
-
+    missing.push("Shipping Address");
     }
 
 

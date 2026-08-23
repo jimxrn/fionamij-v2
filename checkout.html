@@ -170,178 +170,45 @@
                             Where should we send your FIONAMIJ piece?
                         </p>
 
-                        <form class="checkout-form address-grid">
+                       <form class="checkout-form address-grid">
 
-                            <div class="form-group">
+                            <div class="form-group address-full">
 
-                                <label for="region">
-                                    Region
+                                 <label for="shipping-address">
+                                    Shipping Address
                                 </label>
-
-                                <input
+                                
+                                 <input
                                     type="text"
-                                    id="region"
-                                    placeholder="Region">
+                                    id="shipping-address"
+                                    placeholder="House No., Street, Barangay, City, Province, ZIP Code"
+                                    autocomplete="street-address">
+
+                                 <small class="address-hint">
+                                    House No., Street, Barangay, City, Province, ZIP Code
+                                </small>
 
                             </div>
 
-                            <div class="form-group">
+                            <!-- Existing fields preserved for order structure -->
 
-                                <label for="province">
-                                    Province
-                                </label>
+                            <input type="hidden" id="region">
 
-                                <input
-                                    type="text"
-                                    id="province"
-                                    placeholder="Province">
+                            <input type="hidden" id="province">
 
-                            </div>
+                            <input type="hidden" id="city">
 
-                            <div class="form-group">
+                            <input type="hidden" id="barangay">
 
-                                <label for="city">
-                                    City / Municipality
-                                </label>
+                            <input type="hidden" id="street">
 
-                                <input
-                                    type="text"
-                                    id="city"
-                                    placeholder="City">
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label for="barangay">
-                                    Barangay
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="barangay"
-                                    placeholder="Barangay">
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label for="street">
-                                    Street Address
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="street"
-                                    placeholder="House No., Street, Subdivision">
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label for="zipcode">
-                                    ZIP Code
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="zipcode"
-                                    placeholder="ZIP Code">
-
-                            </div>
+                            <input type="hidden" id="zipcode">
 
                         </form>
 
                     </div>
 
                 </section>
-
-
-                <!-- ======================================
-                    PAYMENT METHOD
-                ======================================= -->
-
-                <section class="checkout-section">
-
-                    <div class="checkout-card">
-
-                        <h2 class="section-title">
-                            Payment Method
-                        </h2>
-
-                        <p class="checkout-description">
-                            Choose how you'd like to complete your payment.
-                        </p>
-
-                        <div class="payment-options">
-
-                            <label class="payment-option">
-
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="GCash"
-                                    checked>
-
-                                <span>
-                                    GCash
-                                </span>
-
-                            </label>
-
-                            <label class="payment-option">
-
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="Bank Transfer">
-
-                                <span>
-                                    Bank Transfer
-                                </span>
-
-                            </label>
-
-                        </div>
-
-                        <div
-                            class="payment-details"
-                            id="payment-details">
-
-                            <h3 id="payment-details-title">
-                                GCash
-                            </h3>
-
-                            <p>
-
-                                <span id="payment-account-label">
-                                    Account Name:
-                                </span>
-
-                                <strong id="payment-account-name">
-                                    FIONAMIJ
-                                </strong>
-
-                            </p>
-
-                            <p>
-
-                                <span id="payment-number-label">
-                                    Mobile Number:
-                                </span>
-
-                                <strong id="payment-number">
-                                    09XX XXX XXXX
-                                </strong>
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
 
                 <!-- ======================================
                     ORDER SUMMARY
@@ -484,6 +351,84 @@
                             <strong id="summary-total">
                                 ₱1,290
                             </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+         <!-- ======================================
+                    PAYMENT METHOD
+                ======================================= -->
+
+                <section class="checkout-section">
+
+                    <div class="checkout-card">
+
+                        <h2 class="section-title">
+                            Payment Method
+                        </h2>
+
+                        <p class="checkout-description">
+                            Choose how you'd like to complete your payment.
+                        </p>
+
+                        <div class="payment-options">
+
+                            <label class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="GCash"
+                                    checked>
+
+                                <span>
+                                    GCash
+                                </span>
+
+                            </label>
+
+                            <label class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    value="Bank Transfer">
+
+                                <span>
+                                    Bank Transfer
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                        <div
+                            class="payment-details"
+                            id="payment-details">
+
+                            <h3 id="payment-details-title">
+                                GCash
+                            </h3>
+
+                            <div class="payment-qr-wrapper">
+                                <img
+                                id="payment-qr"
+                                class="payment-qr"
+                                src=""
+                                alt="Payment QR Code">
+
+                            </div>
+
+                            <p
+
+                                id="payment-instruction"
+                                class="payment-instruction">
+                                Scan the QR code to complete your payment.
+
+                            </p>
 
                         </div>
 
