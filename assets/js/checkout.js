@@ -335,7 +335,7 @@ function updateCheckoutTotal() {
 
     const subtotal = getSubtotal();
 
-    const shipping = 0; // Shipping will be added later
+    const shipping = 120; // Shipping will be added later
 
     const total =
         Math.max(0, subtotal + shipping - voucherDiscount);
@@ -846,6 +846,7 @@ function buildOrder() {
 
         pricing: {
                 subtotal: getSubtotal(),
+                shipping: 120,
                 voucherDiscount: voucherDiscount,
                 total: Math.max(
                     0,
