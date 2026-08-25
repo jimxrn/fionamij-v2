@@ -470,7 +470,7 @@ async function applyVoucher() {
   CALL OMS
 ========================================*/
 try {
-    
+
 const result =
     await new Promise((resolve, reject) => {
 
@@ -554,6 +554,15 @@ const result =
                     new Error(
                         "Unable to connect to voucher service."
                     )
+                );
+
+            };
+
+        script.onload =
+            function () {
+
+                console.log(
+                    "Voucher JSONP script loaded successfully."
                 );
 
             };
