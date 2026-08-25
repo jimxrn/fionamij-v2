@@ -469,7 +469,8 @@ async function applyVoucher() {
 /*========================================
   CALL OMS
 ========================================*/
-
+try {
+    
 const result =
     await new Promise((resolve, reject) => {
 
