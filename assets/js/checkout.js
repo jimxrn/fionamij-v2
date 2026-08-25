@@ -472,31 +472,115 @@ async function applyVoucher() {
 
 try {
 
-    const response = await fetch(
-        API_URL,
-        {
-            method: "POST",
+    const iframe =
+        document.createElement("iframe");
 
-            redirect: "follow",
+    iframe.style.display = "none";
 
-            headers: {
-                "Content-Type":
-                    "text/plain;charset=utf-8"
-            },
+    iframe.name =
+        "fionamij-voucher-frame";
 
-            body: JSON.stringify({
-                action: "validateVoucher",
-                email: email,
-                code: code,
-                subtotal: subtotal
-            })
-        }
-    );
+    document.body.appendChild(iframe);
+
+
+    const form =
+        document.createElement("form");
+
+    form.method = "POST";
+
+    form.action =
+        API_URL +
+        "?transport=iframe";
+
+    form.target =
+        iframe.name;
+
+
+    const payload =
+        document.createElement("input");
+
+    payload.type = "hidden";
+
+    payload.name = "payload";
+
+    payload.value =
+        JSON.stringify({
+            action: "validateVoucher",
+            email: email,
+            code: code,
+            subtotal: subtotal
+        });
+
+
+    form.appendChild(payload);
+
+    document.body.appendChild(form);
 
 
     const result =
-        await response.json();
+        await new Promise((resolve, reject) => {
 
+            const timeout =
+                setTimeout(() => {
+
+                    cleanup();
+
+                    reject(
+                        new Error(
+                            "Voucher validation timed out."
+                        )
+                    );
+
+                }, 15000);
+
+
+            function cleanup() {
+
+                clearTimeout(timeout);
+
+                window.removeEventListener(
+                    "message",
+                    handleMessage
+                );
+
+                form.remove();
+
+                iframe.remove();
+
+            }
+
+
+            function handleMessage(event) {
+
+                if (
+                    !event.data ||
+                    event.data.source !==
+                        "FIONAMIJ_OMS"
+                ) {
+
+                    return;
+
+                }
+
+
+                cleanup();
+
+                resolve(
+                    event.data.result
+                );
+
+            }
+
+
+            window.addEventListener(
+                "message",
+                handleMessage
+            );
+
+
+            form.submit();
+
+        });
 
     /*----------------------------------------
       RESTORE BUTTON
