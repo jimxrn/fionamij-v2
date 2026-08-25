@@ -470,117 +470,97 @@ async function applyVoucher() {
   CALL OMS
 ========================================*/
 
-try {
+const result =
+    await new Promise((resolve, reject) => {
 
-    const iframe =
-        document.createElement("iframe");
+        const callbackName =
+            "fionamijVoucher_" +
+            Date.now();
 
-    iframe.style.display = "none";
+        const script =
+            document.createElement("script");
 
-    iframe.name =
-        "fionamij-voucher-frame";
-
-    document.body.appendChild(iframe);
-
-
-    const form =
-        document.createElement("form");
-
-    form.method = "POST";
-
-    form.action =
-        API_URL +
-        "?transport=iframe";
-
-    form.target =
-        iframe.name;
-
-
-    const payload =
-        document.createElement("input");
-
-    payload.type = "hidden";
-
-    payload.name = "payload";
-
-    payload.value =
-        JSON.stringify({
-            action: "validateVoucher",
-            email: email,
-            code: code,
-            subtotal: subtotal
-        });
-
-
-    form.appendChild(payload);
-
-    document.body.appendChild(form);
-
-
-    const result =
-        await new Promise((resolve, reject) => {
-
-            const timeout =
-                setTimeout(() => {
-
-                    cleanup();
-
-                    reject(
-                        new Error(
-                            "Voucher validation timed out."
-                        )
-                    );
-
-                }, 15000);
-
-
-            function cleanup() {
-
-                clearTimeout(timeout);
-
-                window.removeEventListener(
-                    "message",
-                    handleMessage
-                );
-
-                form.remove();
-
-                iframe.remove();
-
-            }
-
-
-            function handleMessage(event) {
-
-                if (
-                    !event.data ||
-                    event.data.source !==
-                        "FIONAMIJ_OMS"
-                ) {
-
-                    return;
-
-                }
-
+        const timeout =
+            setTimeout(() => {
 
                 cleanup();
 
-                resolve(
-                    event.data.result
+                reject(
+                    new Error(
+                        "Voucher validation timed out."
+                    )
                 );
 
+            }, 15000);
+
+
+        function cleanup() {
+
+            clearTimeout(timeout);
+
+            delete window[callbackName];
+
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
             }
 
-
-            window.addEventListener(
-                "message",
-                handleMessage
-            );
+        }
 
 
-            form.submit();
+        window[callbackName] =
+            function (data) {
 
-        });
+                cleanup();
+
+                resolve(data);
+
+            };
+
+
+        const params =
+            new URLSearchParams({
+
+                action:
+                    "validateVoucher",
+
+                email:
+                    email,
+
+                code:
+                    code,
+
+                subtotal:
+                    subtotal,
+
+                callback:
+                    callbackName
+
+            });
+
+
+        script.src =
+            API_URL +
+            "?" +
+            params.toString();
+
+
+        script.onerror =
+            function () {
+
+                cleanup();
+
+                reject(
+                    new Error(
+                        "Unable to connect to voucher service."
+                    )
+                );
+
+            };
+
+
+        document.body.appendChild(script);
+
+    });
 
     /*----------------------------------------
       RESTORE BUTTON
