@@ -6,6 +6,9 @@ const APPS_SCRIPT_URL =
 
 const API_URL =
     "https://script.google.com/macros/s/AKfycbzJm4X3iiUV4A1suUPvE_WMSQH34lgHT7PFksZbToMebkC29V4di-7bv1Y_0eWqL-33/exec";
+
+const VOUCHER_API_URL =
+    "https://script.google.com/macros/s/AKfycbxMRHx3reEsInZnevTaeqEOne0tIY62EL64eaH1Fz2fGfLrpDzXnxcz76my0nVkOg/exec";
 /*==========================================
 LOAD SELECTED PRODUCT
 ==========================================*/
@@ -472,103 +475,46 @@ async function applyVoucher() {
 try {
 
 const result =
-    await new Promise((resolve, reject) => {
+    await fetch(
+        VOUCHER_API_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                action:
+                    "validateVoucher",
+                email:
+                    email,
+                code:
+                    code,
+                subtotal:
+                    subtotal
+            })
+        }
+    )
+    .then(async response => {
 
-        const callbackName =
-            "fionamijVoucher_" +
-            Date.now();
+        if (!response.ok) {
 
-        const script =
-            document.createElement("script");
-
-        const timeout =
-            setTimeout(() => {
-
-                cleanup();
-
-                reject(
-                    new Error(
-                        "Voucher validation timed out."
-                    )
-                );
-
-            }, 15000);
-
-
-        function cleanup() {
-
-            clearTimeout(timeout);
-
-            delete window[callbackName];
-
-            if (script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
+            throw new Error(
+                "Voucher service returned " +
+                response.status
+            );
 
         }
 
+        const text =
+            await response.text();
 
-        window[callbackName] =
-            function (data) {
+        console.log(
+            "Voucher API Response:",
+            text
+        );
 
-                cleanup();
-
-                resolve(data);
-
-            };
-
-
-        const params =
-            new URLSearchParams({
-
-                action:
-                    "validateVoucher",
-
-                email:
-                    email,
-
-                code:
-                    code,
-
-                subtotal:
-                    subtotal,
-
-                callback:
-                    callbackName
-
-            });
-
-
-        script.src =
-            API_URL +
-            "?" +
-            params.toString();
-
-
-        script.onerror =
-            function () {
-
-                cleanup();
-
-                reject(
-                    new Error(
-                        "Unable to connect to voucher service."
-                    )
-                );
-
-            };
-
-        script.onload =
-            function () {
-
-                console.log(
-                    "Voucher JSONP script loaded successfully."
-                );
-
-            };
-
-
-        document.body.appendChild(script);
+        return JSON.parse(text);
 
     });
 
