@@ -476,48 +476,39 @@ try {
 
 const result =
     await fetch(
-        VOUCHER_API_URL,
+        "/api/voucher",
         {
             method: "POST",
             headers: {
                 "Content-Type":
-                    "text/plain;charset=utf-8"
+                    "application/json"
             },
             body: JSON.stringify({
-                action:
-                    "validateVoucher",
-                email:
-                    email,
-                code:
-                    code,
-                subtotal:
-                    subtotal
+                email: email,
+                code: code,
+                subtotal: subtotal
             })
         }
     )
     .then(async response => {
 
         if (!response.ok) {
-
             throw new Error(
                 "Voucher service returned " +
                 response.status
             );
-
         }
 
-        const text =
-            await response.text();
+        const result =
+            await response.json();
 
         console.log(
             "Voucher API Response:",
-            text
+            result
         );
 
-        return JSON.parse(text);
-
+        return result;
     });
-
     /*----------------------------------------
       RESTORE BUTTON
     ----------------------------------------*/
@@ -1068,7 +1059,7 @@ async function submitOrder(order) {
         );
 
         const response =
-            await fetch(API_URL, {
+            await fetch("/api/order", {
 
                 method: "POST",
 

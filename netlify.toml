@@ -1,0 +1,12 @@
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/voucher"
+  to = "/.netlify/functions/voucher"
+  status = 200
+
+[[redirects]]
+    from = "/api/order"
+    to = "/.netlify/functions/order"
+    status = 200
