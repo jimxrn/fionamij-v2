@@ -1059,7 +1059,7 @@ async function submitOrder(order) {
         );
 
         const response =
-            await fetch(API_URL, {
+            await fetch("/api/order", {
 
                 method: "POST",
 
