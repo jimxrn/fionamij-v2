@@ -26,6 +26,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /*==========================================
+      PRODUCT QUANTITY
+    ==========================================*/
+
+    const pendingQuantity =
+        Number(
+            localStorage.getItem(
+                "fionamijPendingQuantity"
+            )
+        ) || 1;
+
+    product.quantity = pendingQuantity;
+
+    localStorage.setItem(
+        "selectedProduct",
+        JSON.stringify(product)
+    );
+
+    localStorage.removeItem(
+        "fionamijPendingQuantity"
+    );
+
+    const summaryQuantity =
+    document.getElementById("summary-quantity");
+
+    if (summaryQuantity) {
+
+        const quantity =
+            Number(
+                product.quantity ||
+                localStorage.getItem("fionamijPendingQuantity") ||
+                1
+            );
+
+        summaryQuantity.textContent = quantity;
+    }
+    /*==========================================
     PRODUCT IMAGE
     ==========================================*/
 
@@ -314,19 +350,29 @@ const totalElement =
 
 
 /*==========================================
-GET SUBTOTAL
+  GET SUBTOTAL
 ==========================================*/
-
 function getSubtotal() {
 
     const product =
-        JSON.parse(localStorage.getItem("selectedProduct"));
+        JSON.parse(
+            localStorage.getItem("selectedProduct")
+        );
 
     if (!product || !product.price) {
         return 0;
     }
 
-    return Number(product.price);
+    const quantity =
+        Number(
+            product.quantity ||
+            localStorage.getItem(
+                "fionamijPendingQuantity"
+            ) ||
+            1
+        );
+
+    return Number(product.price) * quantity;
 }
 
 
@@ -863,7 +909,7 @@ function buildOrder() {
                 voucherDiscount: voucherDiscount,
                 total: Math.max(
                     0,
-                    getSubtotal() - voucherDiscount
+                    getSubtotal()+ 120 - voucherDiscount
             )
         }    
 
@@ -993,12 +1039,16 @@ function closeValidationModal() {
 }
 
 
-document
-    .getElementById("validation-modal-close")
-    .addEventListener(
+const validationModalClose =
+    document.getElementById("validation-modal-close");
+
+if (validationModalClose) {
+    validationModalClose.addEventListener(
         "click",
         closeValidationModal
     );
+}
+
 /*==========================================
 CONVERT RECEIPT
 ==========================================*/
