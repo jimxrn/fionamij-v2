@@ -484,6 +484,11 @@ document.addEventListener("click", function (event) {
   DYNAMIC PRODUCT STOCK INDICATOR
 ==========================================*/
 
+/*==========================================
+  UAT-FEATURE-002
+  DYNAMIC PRODUCT STOCK INDICATOR
+==========================================*/
+
 (function () {
 
     const stockIndicator =
@@ -492,36 +497,97 @@ document.addEventListener("click", function (event) {
     if (!stockIndicator) {
         return;
     }
-    
-async function updateStockIndicator() {
-    const activeColorButton =
-        document.querySelector(".color-swatch.active");
 
-    const activeSizeButton =
-        document.querySelector(".size-btn.active");
+    function updateStockIndicator() {
 
-    const stockIndicator =
-        document.getElementById("stock-indicator");
+        const activeColorButton =
+            document.querySelector(".color-swatch.active");
 
-    if (
-        !activeColorButton ||
-        !activeSizeButton ||
-        !stockIndicator
-    ) {
-        return;
-    }
+        const activeSizeButton =
+            document.querySelector(".size-btn.active");
 
-    const color =
-        activeColorButton.dataset.color;
+        if (!activeColorButton || !activeSizeButton) {
+            return;
+        }
 
-    const size =
-        activeSizeButton.dataset.size;
+        const color =
+            activeColorButton.dataset.color;
 
-    stockIndicator.textContent =
-        "Checking stock...";
+        const size =
+            activeSizeButton.dataset.size;
 
-    try {
-        const url =
+        stockIndicator.textContent =
+            "Checking stock...";
+
+        const callbackName =
+            "fionamijStockCallback_" +
+            Date.now();
+
+        const script =
+            document.createElement("script");
+
+        const timeout =
+            setTimeout(() => {
+                cleanup();
+
+                stockIndicator.textContent =
+                    "Stock unavailable";
+
+            }, 10000);
+
+        function cleanup() {
+
+            clearTimeout(timeout);
+
+            if (window[callbackName]) {
+                delete window[callbackName];
+            }
+
+            script.remove();
+        }
+
+        window[callbackName] =
+            function (result) {
+
+                cleanup();
+
+                console.log(
+                    "STOCK RESULT:",
+                    result
+                );
+
+                if (
+                    !result ||
+                    !result.success ||
+                    typeof result.stock !== "number"
+                ) {
+                    stockIndicator.textContent =
+                        "Stock unavailable";
+
+                    return;
+                }
+
+                const stock =
+                    Number(result.stock);
+
+                if (stock <= 0) {
+
+                    stockIndicator.textContent =
+                        "Out of stock";
+
+                } else if (stock <= 5) {
+
+                    stockIndicator.textContent =
+                        `Only ${stock} left`;
+
+                } else {
+
+                    stockIndicator.textContent =
+                        `${stock} available`;
+                }
+            };
+
+        script.src =
             APPS_SCRIPT_URL +
             "?action=getStock" +
             "&collection=" +
@@ -529,60 +595,20 @@ async function updateStockIndicator() {
             "&size=" +
             encodeURIComponent(size) +
             "&color=" +
-            encodeURIComponent(color);
+            encodeURIComponent(color) +
+            "&callback=" +
+            encodeURIComponent(callbackName);
 
-        const response =
-            await fetch(url);
+        script.onerror = function () {
 
-        if (!response.ok) {
-            throw new Error(
-                "Stock request failed: " +
-                response.status
-            );
-        }
+            cleanup();
 
-        const result =
-            await response.json();
-
-        console.log(
-            "STOCK RESULT:",
-            result
-        );
-
-        if (
-            !result ||
-            !result.success ||
-            typeof result.stock !== "number"
-        ) {
             stockIndicator.textContent =
                 "Stock unavailable";
-            return;
-        }
+        };
 
-        const stock =
-            Number(result.stock);
-
-        if (stock <= 0) {
-            stockIndicator.textContent =
-                "Out of stock";
-        } else if (stock <= 5) {
-            stockIndicator.textContent =
-                `Only ${stock} left`;
-        } else {
-            stockIndicator.textContent =
-                `${stock} available`;
-        }
-
-    } catch (error) {
-        console.error(
-            "STOCK ERROR:",
-            error
-        );
-
-        stockIndicator.textContent =
-            "Stock unavailable";
+        document.body.appendChild(script);
     }
-}
 
     document
         .querySelectorAll(".color-swatch")
