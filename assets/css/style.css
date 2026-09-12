@@ -2383,3 +2383,368 @@ VOUCHER MODAL
     }
 
 }
+
+/* =========================================
+   MOBILE SECTION SPACING FIX
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .collection-section {
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+    }
+
+    .pieces {
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+    }
+
+}
+/* =========================================
+   MOBILE HERO IMAGE FIX
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .hero-image {
+        width: 88vw;
+        max-width: 360px;
+        aspect-ratio: 3 / 4;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .hero-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .collection-section {
+        margin-top: 0 !important;
+        padding-top: 1.5rem !important;
+    }
+
+    .collection-cover {
+        width: min(88vw, 360px);
+        margin: 0 auto;
+    }
+
+}
+/* =========================================
+   MOBILE CINTA → PIECES SPACING
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .pieces {
+        margin-top: 0 !important;
+        padding-top: 3rem !important;
+    }
+
+    .pieces-cta {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+
+    .pieces-cta h3 {
+        white-space: normal;
+        font-size: 1.5rem;
+        line-height: 1.2;
+    }
+
+}
+/* =========================================
+   IPAD / TABLET — REDUCE HERO → CINTA GAP
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .collection-section {
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+    }
+
+    .collection-cover {
+        margin-top: 0 !important;
+    }
+
+}
+/* =========================================
+   IPAD / TABLET — TIGHTEN SECTION TRANSITION
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .hero {
+        padding-bottom: 1rem !important;
+    }
+
+    .collection-section {
+        margin-top: 0 !important;
+        padding-top: 1rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+}
+/* =========================================
+   IPAD — CINTA → PIECES SPACING
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .pieces {
+        margin-top: 0 !important;
+        padding-top: 3rem !important;
+    }
+
+    .pieces-cta {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .pieces-cta h3 {
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+}
+/* =========================================
+   IPAD — PIECES PRODUCT CARD
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .pieces-grid {
+        width: min(100%, 420px);
+        margin: 0 auto;
+    }
+
+    .piece-card {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .piece-image {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+}
+/* =========================================
+   IPAD — PRODUCT OPTIONS
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .piece-options {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+
+    .piece-colors {
+        justify-content: center;
+        gap: 1.25rem;
+    }
+
+    .color-swatch {
+        width: 26px;
+        height: 26px;
+    }
+
+    .size-options {
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .size-btn {
+        padding: 8px 16px;
+    }
+
+}
+/* =========================================
+   IPAD — SELECT PIECE BUTTON
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .piece-options .primary-btn {
+        display: block;
+        width: min(100%, 320px);
+        margin: 1.5rem auto 0;
+        text-align: center;
+    }
+
+}
+/* =========================================
+   IPAD — PIECES BOTTOM SPACING
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .pieces {
+        padding-bottom: 4rem !important;
+    }
+
+    .pieces-grid {
+        margin-bottom: 2rem;
+    }
+
+}
+/* =========================================
+   IPAD — FINAL PIECES ALIGNMENT
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .pieces {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pieces-intro {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .pieces-cta {
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .pieces-grid {
+        width: min(100%, 420px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+/* =========================================
+   MOBILE — FINAL SPACING & ALIGNMENT
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .pieces {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .pieces-intro,
+    .pieces-cta {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .pieces-grid {
+        width: 100%;
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .piece-card {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .piece-options {
+        width: 100%;
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pieces .primary-btn {
+        width: min(100%, 320px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+/* =========================================
+   DESKTOP — FINAL SPACING & ALIGNMENT
+   ========================================= */
+
+@media (min-width: 1025px) {
+
+    .hero {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .collection-section,
+    .pieces {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .collection-cover {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pieces-intro,
+    .pieces-cta {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .pieces-grid {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+/* =========================================
+   UAT-FEATURE-001 — QUANTITY SELECTOR
+   ========================================= */
+
+.piece-quantity {
+    margin: 1rem auto 1.5rem;
+    text-align: center;
+}
+
+.piece-quantity .option-label {
+    margin-bottom: 0.5rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.quantity-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.quantity-value {
+    min-width: 24px;
+    text-align: center;
+    font-size: 16px;
+}

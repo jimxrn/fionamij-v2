@@ -348,3 +348,264 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+
+/*==========================================
+  UAT-FEATURE-001
+  PRODUCT QUANTITY CONTROL
+==========================================*/
+
+(function () {
+
+    const minusButton =
+        document.getElementById("quantity-minus");
+
+    const plusButton =
+        document.getElementById("quantity-plus");
+
+    const quantityValue =
+        document.getElementById("quantity-value");
+
+    const priceElement =
+        document.querySelector(".piece-price");
+
+    if (
+        !minusButton ||
+        !plusButton ||
+        !quantityValue
+    ) {
+        return;
+    }
+
+    const unitPrice = 1290;
+
+    let quantity = 1;
+
+    function updateQuantity() {
+
+        quantityValue.textContent = quantity;
+
+        if (priceElement) {
+            const total =
+                unitPrice * quantity;
+
+            priceElement.textContent =
+                `₱${total.toLocaleString()}`;
+        }
+
+    }
+
+    minusButton.addEventListener("click", function () {
+
+        if (quantity > 1) {
+            quantity--;
+            updateQuantity();
+        }
+
+    });
+
+    plusButton.addEventListener("click", function () {
+
+        quantity++;
+        updateQuantity();
+
+    });
+
+    updateQuantity();
+
+})();
+
+
+/*==========================================
+  SAVE PRODUCT QUANTITY BEFORE CHECKOUT
+==========================================*/
+
+(function () {
+
+    const selectPieceButton =
+        document.getElementById("select-piece-btn");
+
+    if (!selectPieceButton) {
+        return;
+    }
+
+    selectPieceButton.addEventListener(
+        "click",
+        function () {
+
+            const quantityElement =
+                document.getElementById("quantity-value");
+
+            const quantity =
+                quantityElement
+                    ? Number(quantityElement.textContent)
+                    : 1;
+
+            localStorage.setItem(
+                "fionamijPendingQuantity",
+                String(quantity)
+            );
+
+        },
+        true
+    );
+
+})();
+
+/*==========================================
+  UAT-FEATURE-001
+  PASS QUANTITY TO CHECKOUT
+==========================================*/
+
+document.addEventListener("click", function (event) {
+
+    const selectButton =
+        event.target.closest("#select-piece-btn");
+
+    if (!selectButton) {
+        return;
+    }
+
+    const quantityElement =
+        document.getElementById("quantity-value");
+
+    const quantity =
+        Number(
+            quantityElement?.textContent
+        ) || 1;
+
+    localStorage.setItem(
+        "fionamijPendingQuantity",
+        quantity
+    );
+
+}, true);
+/*==========================================
+  UAT-FEATURE-002
+  DYNAMIC PRODUCT STOCK INDICATOR
+==========================================*/
+
+(function () {
+
+    const stockIndicator =
+        document.getElementById("stock-indicator");
+
+    if (!stockIndicator) {
+        return;
+    }
+    
+async function updateStockIndicator() {
+    const activeColorButton =
+        document.querySelector(".color-swatch.active");
+
+    const activeSizeButton =
+        document.querySelector(".size-btn.active");
+
+    const stockIndicator =
+        document.getElementById("stock-indicator");
+
+    if (
+        !activeColorButton ||
+        !activeSizeButton ||
+        !stockIndicator
+    ) {
+        return;
+    }
+
+    const color =
+        activeColorButton.dataset.color;
+
+    const size =
+        activeSizeButton.dataset.size;
+
+    stockIndicator.textContent =
+        "Checking stock...";
+
+    try {
+        const url =
+            APPS_SCRIPT_URL +
+            "?action=getStock" +
+            "&collection=" +
+            encodeURIComponent("The Cinta") +
+            "&size=" +
+            encodeURIComponent(size) +
+            "&color=" +
+            encodeURIComponent(color);
+
+        const response =
+            await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(
+                "Stock request failed: " +
+                response.status
+            );
+        }
+
+        const result =
+            await response.json();
+
+        console.log(
+            "STOCK RESULT:",
+            result
+        );
+
+        if (
+            !result ||
+            !result.success ||
+            typeof result.stock !== "number"
+        ) {
+            stockIndicator.textContent =
+                "Stock unavailable";
+            return;
+        }
+
+        const stock =
+            Number(result.stock);
+
+        if (stock <= 0) {
+            stockIndicator.textContent =
+                "Out of stock";
+        } else if (stock <= 5) {
+            stockIndicator.textContent =
+                `Only ${stock} left`;
+        } else {
+            stockIndicator.textContent =
+                `${stock} available`;
+        }
+
+    } catch (error) {
+        console.error(
+            "STOCK ERROR:",
+            error
+        );
+
+        stockIndicator.textContent =
+            "Stock unavailable";
+    }
+}
+
+    document
+        .querySelectorAll(".color-swatch")
+        .forEach((swatch) => {
+
+            swatch.addEventListener(
+                "click",
+                updateStockIndicator
+            );
+
+        });
+
+    document
+        .querySelectorAll(".size-btn")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                updateStockIndicator
+            );
+
+        });
+
+    updateStockIndicator();
+
+})();
