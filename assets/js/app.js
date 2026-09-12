@@ -483,82 +483,114 @@ document.addEventListener("click", function (event) {
   UAT-FEATURE-002
   DYNAMIC PRODUCT STOCK INDICATOR
 ==========================================*/
-async function updateStockIndicator() {
-    const activeColorButton =
-        document.querySelector(".color-swatch.active");
 
-    const activeSizeButton =
-        document.querySelector(".size-btn.active");
+(function () {
+    const stockIndicator =
+        document.getElementById("stock-indicator");
 
-    if (!activeColorButton || !activeSizeButton) {
+    if (!stockIndicator) {
         return;
     }
 
-    const color =
-        activeColorButton.dataset.color;
+    async function updateStockIndicator() {
+        const activeColorButton =
+            document.querySelector(".color-swatch.active");
 
-    const size =
-        activeSizeButton.dataset.size;
+        const activeSizeButton =
+            document.querySelector(".size-btn.active");
 
-    stockIndicator.textContent =
-        "Checking stock...";
-
-    try {
-        const params = new URLSearchParams({
-            collection: "The Cinta",
-            size: size,
-            color: color
-        });
-
-        const response =
-            await fetch(`/api/stock?${params.toString()}`);
-
-        if (!response.ok) {
-            throw new Error(
-                "Stock request failed: " +
-                response.status
-            );
-        }
-
-        const result =
-            await response.json();
-
-        console.log(
-            "STOCK RESULT:",
-            result
-        );
-
-        if (
-            !result ||
-            !result.success ||
-            typeof result.stock !== "number"
-        ) {
-            stockIndicator.textContent =
-                "Stock unavailable";
+        if (!activeColorButton || !activeSizeButton) {
             return;
         }
 
-        const stock =
-            Number(result.stock);
+        const color =
+            activeColorButton.dataset.color;
 
-        if (stock <= 0) {
-            stockIndicator.textContent =
-                "Out of stock";
-        } else if (stock <= 5) {
-            stockIndicator.textContent =
-                `Only ${stock} left`;
-        } else {
-            stockIndicator.textContent =
-                `${stock} available`;
-        }
-
-    } catch (error) {
-        console.error(
-            "STOCK ERROR:",
-            error
-        );
+        const size =
+            activeSizeButton.dataset.size;
 
         stockIndicator.textContent =
-            "Stock unavailable";
+            "Checking stock...";
+
+        try {
+            const params = new URLSearchParams({
+                collection: "The Cinta",
+                size: size,
+                color: color
+            });
+
+            const response =
+                await fetch(
+                    `/api/stock?${params.toString()}`
+                );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Stock request failed: " +
+                    response.status
+                );
+            }
+
+            const result =
+                await response.json();
+
+            console.log(
+                "STOCK RESULT:",
+                result
+            );
+
+            if (
+                !result ||
+                !result.success ||
+                typeof result.stock !== "number"
+            ) {
+                stockIndicator.textContent =
+                    "Stock unavailable";
+                return;
+            }
+
+            const stock =
+                Number(result.stock);
+
+            if (stock <= 0) {
+                stockIndicator.textContent =
+                    "Out of stock";
+            } else if (stock <= 5) {
+                stockIndicator.textContent =
+                    `Only ${stock} left`;
+            } else {
+                stockIndicator.textContent =
+                    `${stock} available`;
+            }
+
+        } catch (error) {
+            console.error(
+                "STOCK ERROR:",
+                error
+            );
+
+            stockIndicator.textContent =
+                "Stock unavailable";
+        }
     }
-}
+
+    document
+        .querySelectorAll(".color-swatch")
+        .forEach((swatch) => {
+            swatch.addEventListener(
+                "click",
+                updateStockIndicator
+            );
+        });
+
+    document
+        .querySelectorAll(".size-btn")
+        .forEach((button) => {
+            button.addEventListener(
+                "click",
+                updateStockIndicator
+            );
+        });
+
+    updateStockIndicator();
+})();
