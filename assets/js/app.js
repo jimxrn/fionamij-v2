@@ -503,79 +503,62 @@ async function updateStockIndicator() {
     stockIndicator.textContent =
         "Checking stock...";
 
-    const callbackName =
-        "fionamijStockCallback_" +
-        Date.now();
+    try {
+        const params = new URLSearchParams({
+            collection: "The Cinta",
+            size: size,
+            color: color
+        });
 
-    const script =
-        document.createElement("script");
+        const response =
+            await fetch(`/api/stock?${params.toString()}`);
 
-    function cleanup() {
-        clearTimeout(timeout);
-        delete window[callbackName];
-        script.remove();
-    }
-
-    const timeout =
-        setTimeout(() => {
-            cleanup();
-            stockIndicator.textContent =
-                "Stock unavailable";
-        }, 10000);
-
-    window[callbackName] =
-        function (result) {
-            cleanup();
-
-            console.log(
-                "STOCK RESULT:",
-                result
+        if (!response.ok) {
+            throw new Error(
+                "Stock request failed: " +
+                response.status
             );
+        }
 
-            if (
-                !result ||
-                !result.success ||
-                typeof result.stock !== "number"
-            ) {
-                stockIndicator.textContent =
-                    "Stock unavailable";
-                return;
-            }
+        const result =
+            await response.json();
 
-            const stock =
-                Number(result.stock);
+        console.log(
+            "STOCK RESULT:",
+            result
+        );
 
-            if (stock <= 0) {
-                stockIndicator.textContent =
-                    "Out of stock";
-            } else if (stock <= 5) {
-                stockIndicator.textContent =
-                    `Only ${stock} left`;
-            } else {
-                stockIndicator.textContent =
-                    `${stock} available`;
-            }
-        };
-
-    script.src =
-        APPS_SCRIPT_URL +
-        "?action=getStock" +
-        "&collection=" +
-        encodeURIComponent("The Cinta") +
-        "&size=" +
-        encodeURIComponent(size) +
-        "&color=" +
-        encodeURIComponent(color) +
-        "&callback=" +
-        encodeURIComponent(callbackName);
-
-    script.onerror =
-        function () {
-            cleanup();
-
+        if (
+            !result ||
+            !result.success ||
+            typeof result.stock !== "number"
+        ) {
             stockIndicator.textContent =
                 "Stock unavailable";
-        };
+            return;
+        }
 
-    document.body.appendChild(script);
+        const stock =
+            Number(result.stock);
+
+        if (stock <= 0) {
+            stockIndicator.textContent =
+                "Out of stock";
+        } else if (stock <= 5) {
+            stockIndicator.textContent =
+                `Only ${stock} left`;
+        } else {
+            stockIndicator.textContent =
+                `${stock} available`;
+        }
+
+    } catch (error) {
+        console.error(
+            "STOCK ERROR:",
+            error
+        );
+
+        stockIndicator.textContent =
+            "Stock unavailable";
+    }
 }
