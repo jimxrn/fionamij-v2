@@ -235,6 +235,16 @@ const paymentNumberLabel =
 const paymentNumber =
     document.getElementById("payment-number");
 
+const customerMobile =
+    document.getElementById("customer-mobile");
+
+if (customerMobile) {
+    customerMobile.addEventListener("input", function () {
+        this.value = this.value
+            .replace(/\D/g, "")
+            .slice(0, 11);
+    });
+}
 
 function updatePaymentDetails() {
 
@@ -522,7 +532,7 @@ try {
 
 const result =
     await fetch(
-        "/api/voucher",
+         "/api/voucher",
         {
             method: "POST",
             headers: {
@@ -606,7 +616,9 @@ const result =
         email: email
 
     };
-
+    if (emailInput) {
+         emailInput.disabled = true;
+    }
 
     voucherDiscount =
         Number(result.discount) || 0;
