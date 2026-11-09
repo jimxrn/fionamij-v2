@@ -15,121 +15,125 @@ LOAD SELECTED PRODUCT
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const product = JSON.parse(
-        localStorage.getItem("selectedProduct")
+    const cart = JSON.parse(
+    localStorage.getItem("fionamijCart") || "[]"
     );
 
-    if (!product) {
+    const product = JSON.parse(
+    localStorage.getItem("selectedProduct") || "null"
+    );
 
+    if (cart.length === 0 && !product) {
         return;
-
     }
+
+    const checkoutItems = cart.length > 0
+    ? cart
+    : [{ ...product, quantity: Number(product.quantity) || 1 }];
 
     /*==========================================
       PRODUCT QUANTITY
     ==========================================*/
 
-    const pendingQuantity =
-        Number(
-            localStorage.getItem(
-                "fionamijPendingQuantity"
-            )
-        ) || 1;
-
-    product.quantity = pendingQuantity;
-
-    localStorage.setItem(
-        "selectedProduct",
-        JSON.stringify(product)
-    );
-
-    localStorage.removeItem(
-        "fionamijPendingQuantity"
-    );
-
-    const summaryQuantity =
-    document.getElementById("summary-quantity");
-
-    if (summaryQuantity) {
-
-        const quantity =
+    if (cart.length === 0 && product) {
+        const pendingQuantity =
             Number(
-                product.quantity ||
-                localStorage.getItem("fionamijPendingQuantity") ||
-                1
-            );
+                localStorage.getItem("fionamijPendingQuantity")
+            ) || Number(product.quantity) || 1;
 
-        summaryQuantity.textContent = quantity;
-    }
-    /*==========================================
-    PRODUCT IMAGE
-    ==========================================*/
+        product.quantity = pendingQuantity;
 
-    const checkoutImage = document.getElementById("checkout-product-image");
+        localStorage.setItem(
+            "selectedProduct",
+            JSON.stringify(product)
+        );
 
-    if (checkoutImage) {
-
-        checkoutImage.src = product.image;
-        checkoutImage.alt = `${product.name} in ${product.color}`;
-
-    }
-    const summaryImage = document.getElementById("summary-product-image");
-
-    if (summaryImage) {
-
-        summaryImage.src = product.image;
-        summaryImage.alt = `${product.name} in ${product.color}`;
-
+        localStorage.removeItem("fionamijPendingQuantity");
     }
 
     /*==========================================
-    PRODUCT DETAILS
+      RENDER CART ITEMS
     ==========================================*/
 
-    const checkoutColor = document.getElementById("checkout-color");
-    const summaryColor = document.getElementById("summary-color");
-    const summarySize = document.getElementById("summary-size");
+    const itemsContainer =
+        document.getElementById("checkout-items-list");
 
-    if (checkoutColor) {
+    if (itemsContainer) {
+        itemsContainer.innerHTML = "";
 
-        checkoutColor.textContent = product.color;
+        checkoutItems.forEach(item => {
+            const itemElement = document.createElement("div");
+            itemElement.className = "summary-product";
 
+            itemElement.innerHTML = `
+                <img
+                    src="${item.image || "assets/images/cinta-black.jpg"}"
+                    alt="${item.name || "The Cinta"}"
+                    class="summary-image">
+
+                <div class="summary-details">
+                    <p class="product-collection">
+                        ${item.collection || "Cinta Collection"}
+                    </p>
+
+                    <h3 class="product-name">
+                        ${item.name || "The Cinta"}
+                    </h3>
+
+                    <p>Color: ${item.color || ""}</p>
+                    <p>Size: ${item.size || ""}</p>
+                    <p>Quantity: ${Number(item.quantity) || 1}</p>
+                    <p>Price: ₱${(Number(item.price) || 0).toLocaleString()}</p>
+                </div>
+            `;
+
+            itemsContainer.appendChild(itemElement);
+        });
     }
 
-    if (summaryColor) {
+    /*==========================================
+      LEGACY SINGLE-PRODUCT DETAILS
+    ==========================================*/
 
-        summaryColor.textContent = product.color;
+    if (product) {
+        const checkoutImage =
+            document.getElementById("checkout-product-image");
 
-    }
+        if (checkoutImage) {
+            checkoutImage.src = product.image;
+            checkoutImage.alt = `${product.name} in ${product.color}`;
+        }
 
-    if (summarySize) {
+        const checkoutColor =
+            document.getElementById("checkout-color");
 
-        summarySize.textContent = product.size;
-
+        if (checkoutColor) {
+            checkoutColor.textContent = product.color;
+        }
     }
 
     /*==========================================
     PRODUCT NAME
     ==========================================*/
 
-    document.querySelectorAll(".product-name").forEach((element) => {
+    if (product && !document.getElementById("checkout-items-list")?.children.length) {
+        document.querySelectorAll(".product-name").forEach((element) => {
+            element.textContent = product.name;
+        });
+    }
 
-        element.textContent = product.name;
 
-    });
+/*==========================================
+PRODUCT PRICE
+==========================================*/
 
-    /*==========================================
-    PRODUCT PRICE
-    ==========================================*/
-
+if (product && !document.getElementById("checkout-items-list")?.children.length) {
     document.querySelectorAll(".product-price").forEach((element) => {
-
         element.textContent =
-            `₱${product.price.toLocaleString()}`;
-
+            `₱${Number(product.price).toLocaleString()}`;
     });
+}
 
-});
 
 /*==========================================
 RECEIPT PREVIEW
@@ -363,28 +367,40 @@ const totalElement =
   GET SUBTOTAL
 ==========================================*/
 function getSubtotal() {
+    const cart = JSON.parse(
+        localStorage.getItem("fionamijCart") || "[]"
+    );
 
-    const product =
-        JSON.parse(
-            localStorage.getItem("selectedProduct")
-        );
+    if (cart.length > 0) {
+        return cart.reduce((total, item) => {
+            const price = Number(item.price) || 0;
+            const quantity = Math.max(
+                1,
+                Number(item.quantity) || 1
+            );
+
+            return total + (price * quantity);
+        }, 0);
+    }
+
+    // Fallback for the existing single-product checkout
+    const product = JSON.parse(
+        localStorage.getItem("selectedProduct") || "null"
+    );
 
     if (!product || !product.price) {
         return 0;
     }
 
-    const quantity =
-        Number(
-            product.quantity ||
-            localStorage.getItem(
-                "fionamijPendingQuantity"
-            ) ||
-            1
-        );
+    const quantity = Math.max(
+        1,
+        Number(product.quantity) ||
+        Number(localStorage.getItem("fionamijPendingQuantity")) ||
+        1
+    );
 
     return Number(product.price) * quantity;
 }
-
 
 /*==========================================
 UPDATE TOTAL
@@ -861,50 +877,55 @@ updateCheckoutTotal();
 BUILD ORDER
 ==========================================*/
 
-function buildOrder() {
 
-    const product = JSON.parse(
-        localStorage.getItem("selectedProduct")
+function buildOrder() {
+    const cart = JSON.parse(
+        localStorage.getItem("fionamijCart") || "[]"
     );
 
+    const savedProduct = JSON.parse(
+        localStorage.getItem("selectedProduct") || "null"
+    );
+
+    const items = cart.length > 0
+        ? cart
+        : savedProduct
+            ? [{
+                ...savedProduct,
+                quantity: Math.max(
+                    1,
+                    Number(savedProduct.quantity) || 1
+                )
+            }]
+            : [];
+
+    const product = items[0] || null;
+
     return {
-
         customer: {
-
             fullName: document.getElementById("customer-name").value.trim(),
-
             mobile: document.getElementById("customer-mobile").value.trim(),
-
             email: document.getElementById("customer-email").value.trim()
-
         },
 
         shipping: {
-
             region: "",
-
             province: "",
-
             city: "",
-
             barangay: "",
-
             street: document.getElementById("shipping-address").value.trim(),
-
-            zipCode: "",
-
+            zipCode: ""
         },
 
         payment: {
-
             method:
                 document.querySelector(
                     'input[name="payment"]:checked'
                 )?.value || ""
-
         },
 
         product: product,
+        items: items,
 
         voucher: appliedVoucher
             ? {
@@ -912,22 +933,21 @@ function buildOrder() {
                 type: appliedVoucher.type,
                 value: appliedVoucher.value,
                 discount: voucherDiscount
-        }   
-        : null,
+            }
+            : null,
 
         pricing: {
-                subtotal: getSubtotal(),
-                shipping: 120,
-                voucherDiscount: voucherDiscount,
-                total: Math.max(
-                    0,
-                    getSubtotal()+ 120 - voucherDiscount
+            subtotal: getSubtotal(),
+            shipping: 120,
+            voucherDiscount: voucherDiscount,
+            total: Math.max(
+                0,
+                getSubtotal() + 120 - voucherDiscount
             )
-        }    
-
+        }
     };
-
 }
+
 /*==========================================
 ORDER VALIDATION
 ==========================================*/
@@ -1232,6 +1252,11 @@ async function submitOrder(order) {
                 "Order Submitted"
             );
 
+        // Clear cart only after successful order submission
+            localStorage.removeItem("fionamijCart");
+            localStorage.removeItem("selectedProduct");
+            localStorage.removeItem("fionamijPendingQuantity");
+
 
         } else {
 
@@ -1242,10 +1267,7 @@ async function submitOrder(order) {
         }
         
         
-    }
-
-
-    catch (error) {
+    } catch (error) {
 
         hideProcessingModal();
 
@@ -1319,3 +1341,6 @@ if (completeOrderButton) {
     });
 
 }
+
+
+});
