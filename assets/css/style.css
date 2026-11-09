@@ -2748,3 +2748,37 @@ VOUCHER MODAL
     text-align: center;
     font-size: 16px;
 }
+
+/* ==========================================
+   CHECKOUT LAYOUT — SINGLE COLUMN
+========================================== */
+
+@media (min-width: 992px) {
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .checkout-main {
+        grid-column: 1 / -1;
+        width: 100%;
+        max-width: 700px;
+        margin-inline: auto;
+        min-width: 0;
+    }
+}
+
+/* CHECKOUT — REDUCE SPACE BETWEEN SECTIONS */
+
+.checkout-page .checkout-layout {
+    row-gap: 1rem;
+}
+
+.checkout-page .checkout-section {
+    margin-bottom: 0;
+}
+
+.checkout-page .checkout-main {
+    gap: 1rem;
+}
