@@ -278,9 +278,9 @@ function updatePaymentDetails() {
         paymentInstruction.textContent =
             "Scan the QR code to complete your payment.";
 
-        // Temporary mock QR
+        // Gcash QR
         paymentQr.src =
-            "https://drive.google.com/thumbnail?id=1A7x3us7XPl7ZAF0jk0r0FggI28I7RcoJ&sz=w1000";
+            "https://drive.google.com/thumbnail?id=1DjvJHKSxKCx-Peuwj1dgV9xMaviTCIrh&sz=w1000";
     }
 
 
@@ -292,9 +292,9 @@ function updatePaymentDetails() {
         paymentInstruction.textContent =
             "Scan the QR code to complete your payment.";
 
-        // Temporary mock QR
+        //  BT QR
         paymentQr.src =
-            "https://drive.google.com/thumbnail?id=1f5btgUgqpFAv7kSljs5I0m4Xu9rMCNzs&sz=w1000";
+            "https://drive.google.com/thumbnail?id=1Fo5uj3wh_NMvZHF15GvtKxzbtaLci0pF&sz=w1000";
     }
 
 }
